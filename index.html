@@ -161,11 +161,15 @@ section{padding:72px 24px}
 
 /* PAYMENT */
 .pay-wrap{margin-top:28px;padding-top:28px;border-top:1px solid var(--border)}
-.pay-label{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:16px}
-#payment-request-button{min-height:44px}
-.pay-or{display:flex;align-items:center;gap:12px;margin:14px 0;font-size:.78rem;color:var(--muted)}
-.pay-or::before,.pay-or::after{content:'';flex:1;height:1px;background:var(--border)}
-.pay-secure{text-align:center;font-size:.72rem;color:var(--muted);margin-top:12px;display:flex;align-items:center;justify-content:center;gap:6px}
+.pay-label{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:14px}
+#payment-request-button{margin-bottom:10px}
+.pay-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.pay-btn{padding:13px 10px;border-radius:12px;font-family:var(--fb);font-size:.78rem;font-weight:600;cursor:pointer;border:none;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;transition:opacity .2s,transform .15s;letter-spacing:.02em;white-space:nowrap}
+.pay-btn:hover{opacity:.85;transform:translateY(-1px)}
+.pay-btn-paypal{background:#003087;color:#fff}
+.pay-btn-venmo{background:#3396cd;color:#fff}
+.pay-btn-card{background:var(--charcoal);color:#fff}
+.pay-secure{text-align:center;font-size:.71rem;color:var(--muted);margin-top:12px}
 
 /* CONTACT */
 .cl{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:1fr 1.4fr;gap:72px;align-items:start}
@@ -506,12 +510,19 @@ footer{background:var(--charcoal);padding:56px 24px;color:rgba(255,255,255,.6)}
           <button type="submit" class="fsub">Send Message →</button>
         </form>
         <div id="fs" style="display:none;margin-top:18px;background:var(--sage-pale);padding:22px;border-radius:12px;text-align:center"><div style="font-family:var(--fd);font-size:1.25rem;color:var(--sage-deep);margin-bottom:5px">Thank you for reaching out.</div><div style="font-size:.83rem;color:var(--muted)">We'll be in touch within one business day.</div></div>
-        <div class="pay-wrap" id="pay-wrap" style="display:none">
-          <div class="pay-label">Or book &amp; pay for a consultation</div>
+        <div class="pay-wrap" id="pay-wrap">
+          <div class="pay-label">Or pay to book a consultation</div>
+          <!-- Apple Pay / Google Pay slot — shown by Stripe JS when browser supports it -->
           <div id="payment-request-button"></div>
-          <div class="pay-or">or pay with card</div>
-          <button class="fsub" id="card-pay-btn" type="button" onclick="initCardPay()">Pay with Card</button>
-          <div class="pay-secure">🔒 Secured by Stripe &nbsp;·&nbsp; Apple Pay &amp; Google Pay supported</div>
+          <div class="pay-btns">
+            <!-- TODO: Replace with your PayPal.me URL, e.g. https://paypal.me/YourHandle/150 -->
+            <a href="https://paypal.me/YOURHANDLE" target="_blank" rel="noopener" class="pay-btn pay-btn-paypal">PayPal</a>
+            <!-- TODO: Replace with your Venmo handle, e.g. https://venmo.com/YourHandle -->
+            <a href="https://venmo.com/YOURHANDLE" target="_blank" rel="noopener" class="pay-btn pay-btn-venmo">Venmo</a>
+            <!-- TODO: Wire up your Stripe Payment Link for card payments -->
+            <button type="button" class="pay-btn pay-btn-card" onclick="initCardPay()">💳 Card</button>
+          </div>
+          <div class="pay-secure">🔒 Secured by Stripe &nbsp;·&nbsp; Apple Pay &amp; Google Pay also accepted</div>
         </div>
       </div>
     </div>
@@ -583,12 +594,8 @@ const CONSULT_FEE_LABEL = 'Strategy Room Consultation';
     pr.canMakePayment().then(function (result) {
       if (result) {
         prBtn.mount('#payment-request-button');
-        document.getElementById('pay-wrap').style.display = 'block';
       } else {
-        // Apple Pay / Google Pay not available — show pay-wrap with card only
-        document.getElementById('pay-wrap').style.display = 'block';
         document.getElementById('payment-request-button').style.display = 'none';
-        document.querySelector('.pay-or').style.display = 'none';
       }
     });
     pr.on('paymentmethod', function (e) {
