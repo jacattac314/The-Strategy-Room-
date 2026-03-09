@@ -41,20 +41,22 @@ section{padding:72px 24px}
 .bp:hover{background:var(--sage-deep);transform:translateY(-2px);box-shadow:0 8px 24px rgba(90,125,105,.3)}
 .bs{background:transparent;color:var(--charcoal);font-family:var(--fb);font-size:.8rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:14px 28px;border-radius:var(--r);border:1.5px solid var(--border);cursor:pointer;transition:all .25s}
 .bs:hover{border-color:var(--sage);color:var(--sage-deep);background:var(--sage-pale);transform:translateY(-2px)}
-.hv{position:relative;height:440px}
-.hcm{position:absolute;top:0;right:0;width:84%;height:340px;border-radius:22px;background:linear-gradient(145deg,var(--sage-pale) 0%,#d6e8dc 50%,#c8dfd0 100%);display:flex;align-items:flex-end;padding:28px;overflow:hidden}
-.hcm::before{content:'';position:absolute;top:24px;left:24px;right:24px;height:160px;background:radial-gradient(ellipse at 40% 30%,rgba(255,255,255,.6) 0%,transparent 60%);border-radius:50%}
-.hb2{background:#fff;border-radius:14px;padding:14px 18px;font-size:.75rem;font-weight:600;color:var(--charcoal);box-shadow:var(--sh);position:relative;z-index:1}
-.hb2 span{display:block;font-size:1.3rem;font-family:var(--fd);font-weight:500;color:var(--sage-deep);margin-bottom:2px}
-.hcf{position:absolute;bottom:24px;left:0;width:200px;background:#fff;border-radius:18px;padding:18px;box-shadow:var(--shl)}
-.fi{width:36px;height:36px;background:var(--sage-pale);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:8px}
-.fl{font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sage-deep);margin-bottom:3px}
-.fv{font-family:var(--fd);font-size:.95rem;color:var(--charcoal)}
+.hcards{display:flex;flex-direction:column;gap:14px}
+.hcard{background:#fff;border-radius:18px;padding:20px 22px;display:flex;align-items:center;gap:16px;box-shadow:var(--sh);border:1px solid var(--border);text-decoration:none;transition:transform .2s,box-shadow .2s}
+.hcard:hover{transform:translateY(-2px);box-shadow:var(--shl)}
+.hcard-cta{background:var(--charcoal);border-color:var(--charcoal)}
+.hcard-cta:hover{background:var(--sage-deep);border-color:var(--sage-deep)}
+.hcard-icon{width:44px;height:44px;background:var(--sage-pale);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.hcard-cta .hcard-icon{background:rgba(255,255,255,.1)}
+.hcard-main{font-family:var(--fd);font-size:1.05rem;font-weight:500;color:var(--charcoal);margin-bottom:3px;line-height:1.2}
+.hcard-cta .hcard-main{color:#fff}
+.hcard-sub{font-size:.75rem;color:var(--muted);line-height:1.4}
+.hcard-cta .hcard-sub{color:rgba(255,255,255,.55)}
 
 /* TRUST */
 .ts{background:var(--charcoal);padding:0 24px}
 .ti{max-width:1060px;margin:0 auto;display:flex}
-.t-i{flex:1;padding:24px 20px;display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.65);font-size:.75rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;border-right:1px solid rgba(255,255,255,.08);transition:color .2s}
+.t-i{flex:1;padding:24px 20px;display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.65);font-size:.75rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;border-right:1px solid rgba(255,255,255,.08);transition:color .2s;cursor:pointer;text-decoration:none}
 .t-i:last-child{border-right:none}
 .t-i:hover{color:#fff}
 .td{width:5px;height:5px;background:var(--sage);border-radius:50%;flex-shrink:0}
@@ -157,6 +159,14 @@ section{padding:72px 24px}
 .so{font-size:.76rem;color:var(--sage-deep);font-weight:500;display:flex;align-items:flex-start;gap:6px}
 .so::before{content:'→';flex-shrink:0}
 
+/* PAYMENT */
+.pay-wrap{margin-top:28px;padding-top:28px;border-top:1px solid var(--border)}
+.pay-label{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:16px}
+#payment-request-button{min-height:44px}
+.pay-or{display:flex;align-items:center;gap:12px;margin:14px 0;font-size:.78rem;color:var(--muted)}
+.pay-or::before,.pay-or::after{content:'';flex:1;height:1px;background:var(--border)}
+.pay-secure{text-align:center;font-size:.72rem;color:var(--muted);margin-top:12px;display:flex;align-items:center;justify-content:center;gap:6px}
+
 /* CONTACT */
 .cl{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:1fr 1.4fr;gap:72px;align-items:start}
 .ci h2{font-family:var(--fd);font-size:1.75rem;font-weight:400;color:var(--charcoal);margin-bottom:14px}
@@ -245,25 +255,38 @@ footer{background:var(--charcoal);padding:56px 24px;color:rgba(255,255,255,.6)}
           <button class="bs" onclick="sp('svcs')">Explore Services</button>
         </div>
       </div>
-      <div class="hv">
-        <div class="hcm">
-          <div class="hb2"><span>St. Louis</span>Based &amp; Nationally Serving</div>
+      <div class="hcards">
+        <div class="hcard">
+          <div class="hcard-icon">⚡</div>
+          <div>
+            <div class="hcard-main">Response within 24–48 hours</div>
+            <div class="hcard-sub">From first call to a clear plan — fast</div>
+          </div>
         </div>
-        <div class="hcf">
-          <div class="fi">🤝</div>
-          <div class="fl">Our approach</div>
-          <div class="fv">Calm. Capable. Compassionate.</div>
+        <div class="hcard">
+          <div class="hcard-icon">🔓</div>
+          <div>
+            <div class="hcard-main">No referral or waitlist</div>
+            <div class="hcard-sub">Reach out directly — we take it from there</div>
+          </div>
         </div>
+        <a href="tel:3147376044" class="hcard hcard-cta">
+          <div class="hcard-icon">📞</div>
+          <div>
+            <div class="hcard-main">314-737-6044</div>
+            <div class="hcard-sub">Call or text — we're listening</div>
+          </div>
+        </a>
       </div>
     </div>
   </section>
 
   <div class="ts">
     <div class="ti">
-      <div class="t-i"><span class="td"></span>Behavioral Health Support</div>
-      <div class="t-i"><span class="td"></span>Family Crisis Navigation</div>
-      <div class="t-i"><span class="td"></span>Organizational Consulting</div>
-      <div class="t-i"><span class="td"></span>St. Louis Based</div>
+      <div class="t-i" onclick="sp('fam')"><span class="td"></span>Behavioral Health Support</div>
+      <div class="t-i" onclick="sp('fam')"><span class="td"></span>Family Crisis Navigation</div>
+      <div class="t-i" onclick="sp('org')"><span class="td"></span>Organizational Consulting</div>
+      <a class="t-i" href="tel:3147376044"><span class="td"></span>314-737-6044</a>
     </div>
   </div>
 
@@ -477,12 +500,19 @@ footer{background:var(--charcoal);padding:56px 24px;color:rgba(255,255,255,.6)}
             <div class="fg"><label>Last name</label><input type="text" placeholder="Smith" required></div>
           </div>
           <div class="fg"><label>Email address</label><input type="email" placeholder="jane@example.com" required></div>
-          <div class="fg"><label>Phone number</label><input type="tel" placeholder="(314) 555-0100"></div>
+          <div class="fg"><label>Phone number <span style="font-weight:400;opacity:.5;font-size:.9em">(optional)</span></label><input type="tel" placeholder="(314) 555-0100"></div>
           <div class="fg"><label>I am reaching out as a</label><select><option value="">Select one...</option><option>Family member or caregiver</option><option>Individual seeking support</option><option>Behavioral health organization</option><option>Other</option></select></div>
           <div class="fg"><label>Tell us what's going on</label><textarea placeholder="Share as much or as little as you'd like. We're here to listen." required></textarea></div>
           <button type="submit" class="fsub">Send Message →</button>
         </form>
         <div id="fs" style="display:none;margin-top:18px;background:var(--sage-pale);padding:22px;border-radius:12px;text-align:center"><div style="font-family:var(--fd);font-size:1.25rem;color:var(--sage-deep);margin-bottom:5px">Thank you for reaching out.</div><div style="font-size:.83rem;color:var(--muted)">We'll be in touch within one business day.</div></div>
+        <div class="pay-wrap" id="pay-wrap" style="display:none">
+          <div class="pay-label">Or book &amp; pay for a consultation</div>
+          <div id="payment-request-button"></div>
+          <div class="pay-or">or pay with card</div>
+          <button class="fsub" id="card-pay-btn" type="button" onclick="initCardPay()">Pay with Card</button>
+          <div class="pay-secure">🔒 Secured by Stripe &nbsp;·&nbsp; Apple Pay &amp; Google Pay supported</div>
+        </div>
       </div>
     </div>
   </section>
@@ -522,6 +552,63 @@ window.addEventListener('scroll',()=>{
   tf();
 });
 function hs(e){e.preventDefault();document.getElementById('cf').style.display='none';document.getElementById('fs').style.display='block';}
+
+// ─── Apple Pay / Google Pay via Stripe ───────────────────────────────────────
+// TODO: Replace with your live Stripe publishable key (pk_live_...)
+// Get it from https://dashboard.stripe.com/apikeys
+const STRIPE_KEY = 'pk_live_YOUR_KEY_HERE';
+
+// TODO: Set the consultation fee in cents (e.g. 15000 = $150.00)
+const CONSULT_FEE_CENTS = 15000;
+const CONSULT_FEE_LABEL = 'Strategy Room Consultation';
+
+(function initStripe() {
+  if (!STRIPE_KEY || STRIPE_KEY.includes('YOUR_KEY')) return; // skip if not configured
+  const s = document.createElement('script');
+  s.src = 'https://js.stripe.com/v3/';
+  s.onload = function () {
+    const stripe = Stripe(STRIPE_KEY);
+    const pr = stripe.paymentRequest({
+      country: 'US',
+      currency: 'usd',
+      total: { label: CONSULT_FEE_LABEL, amount: CONSULT_FEE_CENTS },
+      requestPayerName: true,
+      requestPayerEmail: true,
+    });
+    const elements = stripe.elements();
+    const prBtn = elements.create('paymentRequestButton', {
+      paymentRequest: pr,
+      style: { paymentRequestButton: { type: 'book', theme: 'dark', height: '48px' } },
+    });
+    pr.canMakePayment().then(function (result) {
+      if (result) {
+        prBtn.mount('#payment-request-button');
+        document.getElementById('pay-wrap').style.display = 'block';
+      } else {
+        // Apple Pay / Google Pay not available — show pay-wrap with card only
+        document.getElementById('pay-wrap').style.display = 'block';
+        document.getElementById('payment-request-button').style.display = 'none';
+        document.querySelector('.pay-or').style.display = 'none';
+      }
+    });
+    pr.on('paymentmethod', function (e) {
+      // TODO: Create a PaymentIntent on your server and confirm here.
+      // See https://stripe.com/docs/payments/accept-a-payment
+      // Example: fetch('/create-payment-intent', ...).then(...)
+      // For a no-backend option, use a Stripe Payment Link instead:
+      // https://stripe.com/docs/payment-links
+      console.warn('TSR: wire up PaymentIntent creation on your backend.');
+      e.complete('fail');
+    });
+  };
+  document.head.appendChild(s);
+})();
+
+function initCardPay() {
+  // TODO: Replace with your Stripe Payment Link URL for card payments
+  // Create one at https://dashboard.stripe.com/payment-links
+  alert('Wire up your Stripe Payment Link or card form here.');
+}
 if('IntersectionObserver' in window){
   const o=new IntersectionObserver(en=>en.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v');}),{threshold:.08});
   document.querySelectorAll('.fu').forEach(el=>o.observe(el));
