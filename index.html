@@ -1,626 +1,876 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Strategy Room</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{--sage:#7a9e87;--sage-light:#b5cfc0;--sage-pale:#e8f0eb;--sage-deep:#5a7d69;--cream:#faf8f4;--white:#fff;--charcoal:#2c3028;--muted:#6b7068;--border:#e2e8e4;--fd:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans',sans-serif;--r:40px;--sh:0 4px 32px rgba(44,48,40,.07);--shl:0 12px 60px rgba(44,48,40,.12)}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:var(--fb);background:var(--cream);color:var(--charcoal);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,248,244,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:box-shadow .3s}
-nav.sc{box-shadow:0 2px 20px rgba(44,48,40,.08)}
-.ni{max-width:1100px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
-.logo{font-family:var(--fd);font-size:1.2rem;font-weight:500;color:var(--charcoal);cursor:pointer}
-.logo span{color:var(--sage-deep)}
-.nl{display:flex;gap:4px;align-items:center;list-style:none;flex-wrap:wrap}
-.nl a{font-size:.78rem;font-weight:500;color:var(--muted);text-decoration:none;padding:6px 11px;border-radius:20px;transition:all .2s;cursor:pointer;white-space:nowrap}
-.nl a:hover,.nl a.act{color:var(--charcoal);background:var(--sage-pale)}
-.nc{background:var(--charcoal)!important;color:var(--cream)!important;padding:8px 18px!important;border-radius:var(--r)!important;font-size:.76rem!important;font-weight:600!important;letter-spacing:.04em!important;text-transform:uppercase}
-.nc:hover{background:var(--sage-deep)!important;color:#fff!important}
-.pg{display:none;padding-top:64px}
-.pg.on{display:block}
-section{padding:72px 24px}
-.w{max-width:1060px;margin:0 auto}
-.wn{max-width:720px;margin:0 auto}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-/* HERO */
-.hero{min-height:calc(100vh - 64px);background:var(--white);display:flex;align-items:center;padding:60px 24px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-100px;right:-60px;width:500px;height:500px;background:radial-gradient(circle,var(--sage-pale) 0%,transparent 70%);pointer-events:none}
-.hero::after{content:'';position:absolute;bottom:-80px;left:-40px;width:360px;height:360px;background:radial-gradient(circle,#f0ece4 0%,transparent 70%);pointer-events:none}
-.hi{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;position:relative;z-index:1}
-.ey{display:inline-flex;align-items:center;gap:8px;font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--sage-deep);margin-bottom:20px}
-.ey::before{content:'';display:block;width:24px;height:1px;background:var(--sage)}
-.hero h1{font-family:var(--fd);font-size:clamp(2.2rem,4vw,3.4rem);font-weight:400;line-height:1.15;color:var(--charcoal);margin-bottom:20px}
-.hero h1 em{font-style:italic;color:var(--sage-deep)}
-.hs{font-size:.97rem;color:var(--muted);line-height:1.75;margin-bottom:36px;max-width:440px}
-.hb{display:flex;gap:12px;flex-wrap:wrap}
-.bp{background:var(--charcoal);color:var(--cream);font-family:var(--fb);font-size:.8rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:14px 28px;border-radius:var(--r);border:none;cursor:pointer;transition:all .25s}
-.bp:hover{background:var(--sage-deep);transform:translateY(-2px);box-shadow:0 8px 24px rgba(90,125,105,.3)}
-.bs{background:transparent;color:var(--charcoal);font-family:var(--fb);font-size:.8rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:14px 28px;border-radius:var(--r);border:1.5px solid var(--border);cursor:pointer;transition:all .25s}
-.bs:hover{border-color:var(--sage);color:var(--sage-deep);background:var(--sage-pale);transform:translateY(-2px)}
-.hcards{display:flex;flex-direction:column;gap:14px}
-.hcard{background:#fff;border-radius:18px;padding:20px 22px;display:flex;align-items:center;gap:16px;box-shadow:var(--sh);border:1px solid var(--border);text-decoration:none;transition:transform .2s,box-shadow .2s}
-.hcard:hover{transform:translateY(-2px);box-shadow:var(--shl)}
-.hcard-cta{background:var(--charcoal);border-color:var(--charcoal)}
-.hcard-cta:hover{background:var(--sage-deep);border-color:var(--sage-deep)}
-.hcard-icon{width:44px;height:44px;background:var(--sage-pale);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
-.hcard-cta .hcard-icon{background:rgba(255,255,255,.1)}
-.hcard-main{font-family:var(--fd);font-size:1.05rem;font-weight:500;color:var(--charcoal);margin-bottom:3px;line-height:1.2}
-.hcard-cta .hcard-main{color:#fff}
-.hcard-sub{font-size:.75rem;color:var(--muted);line-height:1.4}
-.hcard-cta .hcard-sub{color:rgba(255,255,255,.55)}
+  <!-- ── Primary SEO ───────────────────────────────────────────────────────── -->
+  <title>The Strategy Room | Behavioral Health Case Management & Consulting — St. Louis, MO</title>
+  <meta name="description" content="The Strategy Room provides expert behavioral health case management, crisis navigation, addiction intervention, and consulting for families and organizations. St. Louis, MO. No referral required. Response within 24–48 hours.">
+  <meta name="robots" content="index, follow">
+  <!-- TODO: Update canonical URL to your live domain, e.g. https://thestrategyroomstl.com/ -->
+  <link rel="canonical" href="https://thestrategyroomstl.com/">
 
-/* TRUST */
-.ts{background:var(--charcoal);padding:0 24px}
-.ti{max-width:1060px;margin:0 auto;display:flex}
-.t-i{flex:1;padding:24px 20px;display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.65);font-size:.75rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;border-right:1px solid rgba(255,255,255,.08);transition:color .2s;cursor:pointer;text-decoration:none}
-.t-i:last-child{border-right:none}
-.t-i:hover{color:#fff}
-.td{width:5px;height:5px;background:var(--sage);border-radius:50%;flex-shrink:0}
+  <!-- ── Open Graph (Facebook, LinkedIn) ───────────────────────────────────── -->
+  <meta property="og:type"        content="website">
+  <meta property="og:site_name"   content="The Strategy Room">
+  <meta property="og:title"       content="The Strategy Room | Behavioral Health Case Management & Consulting">
+  <meta property="og:description" content="Compassionate case management, crisis navigation, and behavioral health consulting for families and organizations. St. Louis, MO. No referral required.">
+  <!-- TODO: Update og:url to your live domain -->
+  <meta property="og:url"         content="https://thestrategyroomstl.com/">
+  <!-- TODO: Create and upload a 1200×630px OG image to assets/og-image.jpg -->
+  <meta property="og:image"       content="https://thestrategyroomstl.com/assets/og-image.jpg">
+  <meta property="og:locale"      content="en_US">
 
-/* SHARED */
-.sl{font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--sage-deep);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.sl::after{content:'';flex:1;max-width:36px;height:1px;background:var(--sage-light)}
-.st{font-family:var(--fd);font-size:clamp(1.7rem,3.2vw,2.6rem);font-weight:400;line-height:1.2;color:var(--charcoal);margin-bottom:14px}
-.st em{font-style:italic;color:var(--sage-deep)}
-.ss{font-size:.93rem;color:var(--muted);line-height:1.8;max-width:520px;margin-bottom:48px}
+  <!-- ── Twitter / X Cards ─────────────────────────────────────────────────── -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="The Strategy Room | Behavioral Health Case Management & Consulting">
+  <meta name="twitter:description" content="Compassionate case management, crisis navigation, and behavioral health consulting for families and organizations. St. Louis, MO.">
+  <!-- TODO: Update twitter:image to your live domain -->
+  <meta name="twitter:image"       content="https://thestrategyroomstl.com/assets/og-image.jpg">
 
-/* WHO */
-.wg{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.wc{border-radius:22px;padding:40px 32px;cursor:pointer;transition:transform .3s,box-shadow .3s}
-.wc:hover{transform:translateY(-5px);box-shadow:var(--shl)}
-.wc.fam{background:linear-gradient(135deg,var(--sage-pale) 0%,#d8e9de 100%)}
-.wc.org{background:linear-gradient(135deg,#f0ece4 0%,#e8e2d8 100%)}
-.wt{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sage-deep);margin-bottom:18px;background:rgba(255,255,255,.7);display:inline-block;padding:5px 12px;border-radius:18px}
-.wc.org .wt{color:var(--charcoal)}
-.wc h3{font-family:var(--fd);font-size:1.75rem;font-weight:400;color:var(--charcoal);margin-bottom:14px;line-height:1.2}
-.wc p{font-size:.87rem;color:var(--muted);line-height:1.75;margin-bottom:28px}
-.wl{display:inline-flex;align-items:center;gap:7px;font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--charcoal);cursor:pointer;transition:gap .2s}
-.wl:hover{gap:12px;color:var(--sage-deep)}
+  <!-- ── Local Business Structured Data (JSON-LD) ──────────────────────────── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://thestrategyroomstl.com/",
+    "name": "The Strategy Room",
+    "description": "Compassionate case management, behavioral health intervention, and consulting services for families in crisis and behavioral health organizations.",
+    "url": "https://thestrategyroomstl.com/",
+    "telephone": "+13147376044",
+    "foundingDate": "2023",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "St. Louis",
+      "addressRegion": "MO",
+      "addressCountry": "US"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "United States"
+    },
+    "knowsAbout": [
+      "Behavioral Health Case Management",
+      "Crisis Case Management",
+      "Hospital & Care Navigation",
+      "Addiction Intervention",
+      "Rare Disease Advocacy",
+      "Behavioral Health Consulting",
+      "Family Crisis Support"
+    ],
+    "sameAs": []
+  }
+  </script>
 
-/* ABOUT */
-.ap{background:var(--white)}
-.api{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:72px;align-items:center}
-.aib{width:100%;padding-bottom:100%;border-radius:22px;background:linear-gradient(160deg,var(--sage-pale) 0%,#c0d8c8 60%,#a8c4b4 100%);position:relative}
-.ast{position:absolute;bottom:-16px;right:-16px;background:#fff;border-radius:16px;padding:18px 22px;box-shadow:var(--shl);text-align:center}
-.asn{font-family:var(--fd);font-size:2rem;font-weight:500;color:var(--sage-deep);line-height:1;margin-bottom:3px}
-.asl{font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.ac blockquote{font-family:var(--fd);font-size:1.3rem;font-style:italic;line-height:1.6;color:var(--charcoal);margin-bottom:24px;padding-left:20px;border-left:3px solid var(--sage-light)}
-.ac p{font-size:.9rem;color:var(--muted);line-height:1.85;margin-bottom:14px}
+  <!-- ── Fonts ─────────────────────────────────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-/* SERVICES */
-.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
-.sc2{background:var(--white);border-radius:18px;padding:28px 22px;border:1px solid var(--border);transition:all .3s;position:relative;overflow:hidden}
-.sc2::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--sage-light),var(--sage-deep));transform:scaleX(0);transition:transform .3s}
-.sc2:hover::before{transform:scaleX(1)}
-.sc2:hover{box-shadow:var(--sh);transform:translateY(-3px)}
-.sc2 .si{font-size:1.4rem;margin-bottom:14px;display:block}
-.sc2 h4{font-family:var(--fd);font-size:1.15rem;font-weight:500;color:var(--charcoal);margin-bottom:8px}
-.sc2 p{font-size:.83rem;color:var(--muted);line-height:1.7}
+  <!-- ── Stylesheet ────────────────────────────────────────────────────────── -->
+  <link rel="stylesheet" href="css/styles.css">
 
-/* WHY */
-.wy{background:var(--charcoal)}
-.wy .sl{color:var(--sage-light)}
-.wy .st{color:#fff}
-.wy .st em{color:var(--sage-light)}
-.wyg{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:48px;border-radius:18px;overflow:hidden}
-.wyi{background:rgba(255,255,255,.04);padding:36px 16px;text-align:center;transition:background .3s;border-right:1px solid rgba(255,255,255,.06)}
-.wyi:last-child{border-right:none}
-.wyi:hover{background:rgba(122,158,135,.15)}
-.wyn{font-family:var(--fd);font-size:2.2rem;font-weight:300;color:var(--sage-light);opacity:.4;display:block;margin-bottom:10px}
-.wylb{font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;margin-bottom:8px}
-.wyd{font-size:.78rem;color:rgba(255,255,255,.4);line-height:1.6}
-
-/* HOW WE WORK */
-.hwg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
-.hwi{background:rgba(255,255,255,.05);border-radius:18px;padding:36px 28px;border:1px solid rgba(255,255,255,.08);transition:background .3s}
-.hwi:hover{background:rgba(122,158,135,.15)}
-.hwn{font-family:var(--fd);font-size:2.6rem;font-weight:300;color:var(--sage-light);opacity:.35;display:block;margin-bottom:14px;line-height:1}
-.hwt{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--sage-light);margin-bottom:8px}
-.hwh{font-family:var(--fd);font-size:1.15rem;font-weight:400;color:#fff;margin-bottom:10px;line-height:1.35}
-.hwd{font-size:.84rem;color:rgba(255,255,255,.45);line-height:1.75}
-
-/* CTA BAND */
-.cb{background:linear-gradient(135deg,var(--sage-pale) 0%,#dceae0 100%);text-align:center;padding:88px 24px}
-.cb h2{font-family:var(--fd);font-size:clamp(1.6rem,3.2vw,2.5rem);font-weight:400;color:var(--charcoal);max-width:600px;margin:0 auto 10px;line-height:1.3}
-.cb h2 em{font-style:italic;color:var(--sage-deep)}
-.cb p{color:var(--muted);font-size:.92rem;margin-bottom:32px}
-
-/* PAGE HERO */
-.ph{background:var(--white);padding:72px 24px;text-align:center;border-bottom:1px solid var(--border)}
-.ph h1{font-family:var(--fd);font-size:clamp(1.9rem,4vw,3rem);font-weight:400;color:var(--charcoal);margin-bottom:14px;line-height:1.2}
-.ph h1 em{font-style:italic;color:var(--sage-deep)}
-.ph p{font-size:.93rem;color:var(--muted);max-width:500px;margin:0 auto;line-height:1.8}
-
-/* PROSE */
-.pr{max-width:720px;margin:0 auto}
-.pr h2{font-family:var(--fd);font-size:1.75rem;font-weight:400;color:var(--charcoal);margin-bottom:14px;margin-top:44px}
-.pr h2 em{font-style:italic;color:var(--sage-deep)}
-.pr p{font-size:.93rem;color:var(--muted);line-height:1.9;margin-bottom:18px}
-.pr blockquote{margin:32px 0;padding:24px 28px;background:var(--sage-pale);border-radius:14px;border-left:4px solid var(--sage);font-family:var(--fd);font-size:1.18rem;font-style:italic;color:var(--charcoal);line-height:1.6}
-.db{background:var(--white);border-radius:18px;padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:20px 40px;margin-top:40px;border:1px solid var(--border)}
-.dll{font-size:.66rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--sage-deep);margin-bottom:5px}
-.dlv{font-size:.95rem;color:var(--charcoal);font-weight:500}
-
-/* SVC PAGE */
-.sch{display:flex;align-items:center;gap:16px;margin-bottom:36px;padding-bottom:20px;border-bottom:1px solid var(--border)}
-.cb2{background:var(--charcoal);color:#fff;font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:7px 16px;border-radius:18px}
-.cb2.alt{background:var(--sage-deep)}
-.ct{font-family:var(--fd);font-size:1.65rem;font-weight:400;color:var(--charcoal)}
-.sl2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.sdc{background:var(--white);border-radius:18px;padding:28px;border:1px solid var(--border);transition:all .3s}
-.sdc:hover{border-color:var(--sage-light);box-shadow:var(--sh);transform:translateY(-2px)}
-.st2{font-size:.64rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sage-deep);background:var(--sage-pale);padding:4px 11px;border-radius:18px;display:inline-block;margin-bottom:14px}
-.sdc h4{font-family:var(--fd);font-size:1.2rem;font-weight:500;color:var(--charcoal);margin-bottom:9px}
-.sdc p{font-size:.83rem;color:var(--muted);line-height:1.7;margin-bottom:10px}
-.so{font-size:.76rem;color:var(--sage-deep);font-weight:500;display:flex;align-items:flex-start;gap:6px}
-.so::before{content:'→';flex-shrink:0}
-
-/* PAYMENT */
-.pay-wrap{margin-top:28px;padding-top:28px;border-top:1px solid var(--border)}
-.pay-label{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:14px}
-#payment-request-button{margin-bottom:10px}
-.pay-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.pay-btn{padding:13px 10px;border-radius:12px;font-family:var(--fb);font-size:.78rem;font-weight:600;cursor:pointer;border:none;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;transition:opacity .2s,transform .15s;letter-spacing:.02em;white-space:nowrap}
-.pay-btn:hover{opacity:.85;transform:translateY(-1px)}
-.pay-btn-paypal{background:#003087;color:#fff}
-.pay-btn-venmo{background:#3396cd;color:#fff}
-.pay-btn-card{background:var(--charcoal);color:#fff}
-.pay-secure{text-align:center;font-size:.71rem;color:var(--muted);margin-top:12px}
-
-/* CONTACT */
-.cl{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:1fr 1.4fr;gap:72px;align-items:start}
-.ci h2{font-family:var(--fd);font-size:1.75rem;font-weight:400;color:var(--charcoal);margin-bottom:14px}
-.ci h2 em{font-style:italic;color:var(--sage-deep)}
-.ci p{font-size:.9rem;color:var(--muted);line-height:1.8;margin-bottom:32px}
-.cp,.cloc{background:var(--white);border-radius:14px;padding:20px 24px;border:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:14px}
-.pi{width:40px;height:40px;background:var(--sage-pale);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
-.pl{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
-.pn{font-family:var(--fd);font-size:1.3rem;font-weight:500;color:var(--charcoal);text-decoration:none}
-.pn:hover{color:var(--sage-deep)}
-.cfw{background:var(--white);border-radius:22px;padding:40px;border:1px solid var(--border)}
-.ft{font-family:var(--fd);font-size:1.4rem;font-weight:400;color:var(--charcoal);margin-bottom:5px}
-.fsb{font-size:.83rem;color:var(--muted);margin-bottom:28px;line-height:1.7}
-.fr{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.fg{margin-bottom:15px}
-.fg label{display:block;font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--charcoal);margin-bottom:7px}
-.fg input,.fg select,.fg textarea{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:11px;font-family:var(--fb);font-size:.87rem;color:var(--charcoal);background:var(--cream);outline:none;transition:border-color .2s}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--sage);background:#fff}
-.fg textarea{resize:vertical;min-height:110px}
-.fsub{width:100%;background:var(--charcoal);color:#fff;font-family:var(--fb);font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:16px;border:none;border-radius:var(--r);cursor:pointer;transition:all .25s;margin-top:6px}
-.fsub:hover{background:var(--sage-deep);transform:translateY(-2px);box-shadow:0 8px 24px rgba(90,125,105,.3)}
-
-/* FOOTER */
-footer{background:var(--charcoal);padding:56px 24px;color:rgba(255,255,255,.6)}
-.fo{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:40px}
-.fb{font-family:var(--fd);font-size:1.2rem;font-weight:500;color:#fff;margin-bottom:10px}
-.fb span{color:var(--sage-light)}
-.ftag{font-size:.82rem;line-height:1.7;margin-bottom:20px;max-width:260px}
-.fca a{display:block;color:var(--sage-light);text-decoration:none;font-weight:500;margin-bottom:3px;font-size:.87rem}
-.fc h5{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:14px}
-.fc a{display:block;color:rgba(255,255,255,.55);text-decoration:none;font-size:.83rem;margin-bottom:9px;cursor:pointer;transition:color .2s}
-.fc a:hover{color:#fff}
-.fbot{max-width:1060px;margin:40px auto 0;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;font-size:.74rem;color:rgba(255,255,255,.3)}
-
-/* ANIMS */
-.fu{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
-.fu.v{opacity:1;transform:none}
-.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
-
-@media(max-width:860px){
-  .hi,.api,.cl{grid-template-columns:1fr;gap:36px}
-  .wg,.sl2{grid-template-columns:1fr}
-  .sg{grid-template-columns:1fr 1fr}
-  .wyg{grid-template-columns:1fr 1fr}
-  .hwg{grid-template-columns:1fr}
-  .fo{grid-template-columns:1fr}
-  .ti{flex-direction:column}
-  .t-i{border-right:none;border-bottom:1px solid rgba(255,255,255,.08)}
-  .hv{height:220px}
-  .hcm{width:100%;height:190px}
-  .fr{grid-template-columns:1fr}
-  .db{grid-template-columns:1fr}
-  .fbot{flex-direction:column;gap:6px}
-  .nl{gap:2px}
-  .nl a{font-size:.72rem;padding:5px 8px}
-}
-@media(max-width:560px){.sg{grid-template-columns:1fr}.wyg{grid-template-columns:1fr}}
-</style>
+  <!-- ── Analytics placeholder ─────────────────────────────────────────────── -->
+  <!--
+    TODO: Add your analytics snippet here.
+    Recommended: Google Analytics 4 or Plausible (privacy-friendly).
+    Example (GA4):
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+  -->
 </head>
+
 <body>
 
-<nav id="nav">
-  <div class="ni">
-    <div class="logo" onclick="sp('home')">The <span>Strategy Room</span></div>
-    <ul class="nl">
-      <li><a onclick="sp('home')" data-p="home" class="act">Home</a></li>
-      <li><a onclick="sp('about')" data-p="about">About</a></li>
-      <li><a onclick="sp('svcs')" data-p="svcs">Services</a></li>
-      <li><a onclick="sp('fam')" data-p="fam">For Families</a></li>
-      <li><a onclick="sp('org')" data-p="org">For Orgs</a></li>
-      <li><a onclick="sp('contact')" data-p="contact" class="nc">Contact</a></li>
-    </ul>
-  </div>
-</nav>
+  <!-- ── Accessibility: Skip to Content ────────────────────────────────────── -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
 
-<!-- HOME -->
-<div class="pg on" id="p-home">
-  <section class="hero">
-    <div class="hi">
-      <div>
-        <div class="ey">For Families in Crisis &nbsp;&middot;&nbsp; For Behavioral Health Organizations</div>
-        <h1>Compassionate support in <em>moments that ask the most</em> of you</h1>
-        <p class="hs">Case management and care navigation for families facing a health crisis — and expert consulting for behavioral health organizations. We step in, build a plan, and carry the work.</p>
-        <div class="hb">
+  <!-- ── Crisis Resource Banner ────────────────────────────────────────────── -->
+  <div class="crisis-banner" role="note" aria-label="Emergency resources">
+    If you are in immediate danger, call <a href="tel:911"><strong>911</strong></a>.
+    For mental health crisis support, call or text <a href="tel:988"><strong>988</strong></a> (Suicide &amp; Crisis Lifeline) — available 24/7.
+  </div>
+
+  <!-- ── Navigation ────────────────────────────────────────────────────────── -->
+  <nav id="nav" role="navigation" aria-label="Main navigation">
+    <div class="ni">
+      <button class="logo" onclick="sp('home')" aria-label="The Strategy Room — home">
+        The <span>Strategy Room</span>
+      </button>
+      <ul class="nl" role="list">
+        <li><button class="nl-item" data-p="about"   onclick="sp('about')"   aria-label="About us">About</button></li>
+        <li><button class="nl-item" data-p="svcs"    onclick="sp('svcs')"    aria-label="Our services">Services</button></li>
+        <li><button class="nl-item" data-p="fam"     onclick="sp('fam')"     aria-label="Services for families">For Families</button></li>
+        <li><button class="nl-item" data-p="org"     onclick="sp('org')"     aria-label="Services for organizations">For Orgs</button></li>
+        <li><button class="nl-item nc" data-p="contact" onclick="sp('contact')" aria-label="Get in touch">Get in Touch</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── Main Content ──────────────────────────────────────────────────────── -->
+  <main id="main-content">
+
+    <!-- ════════════════════════════════════════════════════════════
+         HOME PAGE
+    ════════════════════════════════════════════════════════════ -->
+    <div class="pg on" id="p-home" role="region" aria-label="Home">
+
+      <!-- Hero -->
+      <section class="hero" aria-label="Introduction">
+        <div class="hi">
+          <div>
+            <div class="ey">For Families in Crisis &nbsp;&middot;&nbsp; For Behavioral Health Organizations</div>
+            <h1>When the situation is complex, <em>you need more than a referral.</em></h1>
+            <p class="hs">The Strategy Room provides expert case management, crisis navigation, and behavioral health consulting — delivered with calm, clarity, and genuine care.</p>
+            <div class="hb">
+              <button class="bp" onclick="sp('contact')">Book a Consultation</button>
+              <button class="bs" onclick="sp('svcs')">See Services</button>
+            </div>
+          </div>
+          <div class="hcards" aria-label="Key facts">
+            <div class="hcard">
+              <div class="hcard-icon" aria-hidden="true">⚡</div>
+              <div>
+                <div class="hcard-main">Response within 24–48 hours</div>
+                <div class="hcard-sub">From first call to a clear plan — fast</div>
+              </div>
+            </div>
+            <div class="hcard">
+              <div class="hcard-icon" aria-hidden="true">🔓</div>
+              <div>
+                <div class="hcard-main">No referral or waitlist</div>
+                <div class="hcard-sub">Reach out directly — we take it from there</div>
+              </div>
+            </div>
+            <a href="tel:3147376044" class="hcard hcard-cta">
+              <div class="hcard-icon" aria-hidden="true">📞</div>
+              <div>
+                <div class="hcard-main">314-737-6044</div>
+                <div class="hcard-sub">Call or text — we're listening</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Trust strip -->
+      <div class="ts" role="list" aria-label="Service highlights">
+        <div class="ti">
+          <button class="t-i" onclick="sp('fam')" role="listitem" aria-label="Learn about behavioral health support">
+            <span class="td" aria-hidden="true"></span>Behavioral Health Support
+          </button>
+          <button class="t-i" onclick="sp('fam')" role="listitem" aria-label="Learn about family crisis navigation">
+            <span class="td" aria-hidden="true"></span>Family Crisis Navigation
+          </button>
+          <button class="t-i" onclick="sp('org')" role="listitem" aria-label="Learn about organizational consulting">
+            <span class="td" aria-hidden="true"></span>Organizational Consulting
+          </button>
+          <button class="t-i" onclick="sp('contact')" role="listitem" aria-label="Book a consultation">
+            <span class="td" aria-hidden="true"></span>Book a Consultation
+          </button>
+        </div>
+      </div>
+
+      <!-- Who we help -->
+      <section style="background:var(--white)" aria-labelledby="who-heading">
+        <div class="w">
+          <div class="sl">Who we help</div>
+          <h2 id="who-heading" class="st">Serving <em>families and organizations</em> with equal commitment.</h2>
+          <div class="wg">
+            <button class="wc fam fu" onclick="sp('fam')" aria-label="Learn about services for families">
+              <div class="wt">For Families</div>
+              <h3>Crisis is disorienting. We bring order, clarity, and a clear path forward.</h3>
+              <p>From unexpected hospital stays to addiction crises and rare disease navigation — we step in so you can focus on your family.</p>
+              <span class="wl">See family services <span aria-hidden="true">→</span></span>
+            </button>
+            <button class="wc org fu d2" onclick="sp('org')" aria-label="Learn about services for organizations">
+              <div class="wt">For Organizations</div>
+              <h3>Senior expertise, delivered flexibly — without the permanent hire.</h3>
+              <p>Behavioral health organizations access consulting, interim support, and operational strategy shaped around their real challenges.</p>
+              <span class="wl">See org services <span aria-hidden="true">→</span></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- About us (preview) -->
+      <section class="ap" aria-labelledby="about-home-heading">
+        <div class="api w">
+          <div style="position:relative">
+            <div class="aib" aria-hidden="true"></div>
+            <div class="ast" aria-label="Founded in 2023 in St. Louis">
+              <div class="asn">2023</div>
+              <div class="asl">Founded · St. Louis</div>
+            </div>
+          </div>
+          <div class="ac fu d2">
+            <div class="sl">About us</div>
+            <h2 id="about-home-heading" class="st">Built to fill a gap. <em>Built to help.</em></h2>
+            <blockquote>"Whether you're a family in a time of crisis, or a behavioral health organization in need of process improvement or market share growth, The Strategy Room acts as the arm extension of any need you may have."</blockquote>
+            <p class="ac-body">We are a small, experienced, deeply committed team based in St. Louis, Missouri — serving families and organizations across the country since 2023.</p>
+            <button class="bs" onclick="sp('about')" style="margin-top:8px">Our story</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- How we work -->
+      <section class="wy" aria-labelledby="how-heading">
+        <div class="w">
+          <div class="sl">How we work</div>
+          <h2 id="how-heading" class="st">Simple, <em>clear, and fast.</em></h2>
+          <div class="hwg">
+            <div class="hwi fu">
+              <span class="hwn" aria-hidden="true">01</span>
+              <div class="hwt">Tell us what's happening</div>
+              <div class="hwh">One conversation — that's all it takes</div>
+              <div class="hwd">Reach out by phone, text, or through our contact form. No referral, no waitlist, no jargon.</div>
+            </div>
+            <div class="hwi fu d2">
+              <span class="hwn" aria-hidden="true">02</span>
+              <div class="hwt">You get a clear plan</div>
+              <div class="hwh">A strategy within 24–48 hours</div>
+              <div class="hwd">We assess the full picture and return with a grounded, actionable path forward tailored to your situation.</div>
+            </div>
+            <div class="hwi fu d3">
+              <span class="hwn" aria-hidden="true">03</span>
+              <div class="hwt">We carry the work</div>
+              <div class="hwh">Execution, advocacy, results — then we step back</div>
+              <div class="hwd">We handle the coordination, the calls, the navigation — and exit cleanly when the work is done.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Section (Home) -->
+      <section class="faq-section" aria-labelledby="faq-heading">
+        <div class="w">
+          <div class="sl">Common questions</div>
+          <h2 id="faq-heading" class="st">Everything you need to <em>know before reaching out.</em></h2>
+          <div class="faq-list" role="list">
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-question" aria-expanded="false" aria-controls="faq-1">
+                How quickly can you respond?
+                <span class="faq-indicator" aria-hidden="true">+</span>
+              </button>
+              <div id="faq-1" class="faq-answer">
+                We aim to respond to every inquiry within one business day. For urgent situations, please call or text us directly at <a href="tel:3147376044">314-737-6044</a> — we prioritize time-sensitive cases.
+              </div>
+            </div>
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-question" aria-expanded="false" aria-controls="faq-2">
+                Do you accept insurance?
+                <span class="faq-indicator" aria-hidden="true">+</span>
+              </button>
+              <div id="faq-2" class="faq-answer">
+                Our services are private-pay and contract-based. We can provide documentation to assist with insurance reimbursement inquiries, but we do not bill insurers directly. We discuss pricing clearly before any engagement begins.
+              </div>
+            </div>
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-question" aria-expanded="false" aria-controls="faq-3">
+                Are your services available outside of St. Louis?
+                <span class="faq-indicator" aria-hidden="true">+</span>
+              </button>
+              <div id="faq-3" class="faq-answer">
+                Yes. While we are headquartered in St. Louis, Missouri, we work with families and organizations across the United States. Many engagements can be delivered remotely, and we travel when the situation calls for it.
+              </div>
+            </div>
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-question" aria-expanded="false" aria-controls="faq-4">
+                What is the difference between your family and organizational services?
+                <span class="faq-indicator" aria-hidden="true">+</span>
+              </button>
+              <div id="faq-4" class="faq-answer">
+                For families, we provide direct advocacy, crisis case management, and care navigation — walking alongside you through some of the hardest moments. For organizations, we offer behavioral health consulting, interim leadership support, and operational strategy. Both are grounded in the same deep expertise and commitment to results.
+              </div>
+            </div>
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-question" aria-expanded="false" aria-controls="faq-5">
+                How does a first consultation work?
+                <span class="faq-indicator" aria-hidden="true">+</span>
+              </button>
+              <div id="faq-5" class="faq-answer">
+                After you reach out, we schedule a focused conversation to understand your situation fully. From there, we recommend a clear path forward — whether that is a short-term engagement, an ongoing partnership, or a referral to another resource. There is no pressure and no commitment required.
+              </div>
+            </div>
+
+            <div class="faq-item" role="listitem">
+              <button class="faq-question" aria-expanded="false" aria-controls="faq-6">
+                Is this a crisis hotline or emergency service?
+                <span class="faq-indicator" aria-hidden="true">+</span>
+              </button>
+              <div id="faq-6" class="faq-answer">
+                No. The Strategy Room is not an emergency service or crisis hotline. If you or someone you know is in immediate danger, please call <strong>911</strong>. For mental health crisis support available 24/7, call or text <a href="tel:988"><strong>988</strong></a> (Suicide &amp; Crisis Lifeline). We provide professional case management and consulting — not emergency intervention.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Band -->
+      <section class="cb" aria-label="Call to action">
+        <div class="wn">
+          <h2>When the system feels overwhelming, <em>you don't have to carry it alone.</em></h2>
+          <p>A conversation costs nothing. Let us help you find the next right step.</p>
           <button class="bp" onclick="sp('contact')">Book a Consultation</button>
-          <button class="bs" onclick="sp('svcs')">Explore Services</button>
         </div>
+      </section>
+    </div>
+    <!-- /HOME -->
+
+
+    <!-- ════════════════════════════════════════════════════════════
+         ABOUT PAGE
+    ════════════════════════════════════════════════════════════ -->
+    <div class="pg" id="p-about" role="region" aria-label="About us">
+      <div class="ph">
+        <div class="sl" style="justify-content:center;margin-bottom:10px">Our story</div>
+        <h1>Built to fill a gap. <em>Built to help.</em></h1>
+        <p>Founded in 2023 with a simple conviction: that families and organizations both deserve access to expert, compassionate support — when and where they need it most.</p>
       </div>
-      <div class="hcards">
-        <div class="hcard">
-          <div class="hcard-icon">⚡</div>
-          <div>
-            <div class="hcard-main">Response within 24–48 hours</div>
-            <div class="hcard-sub">From first call to a clear plan — fast</div>
+      <section style="background:var(--cream)" aria-labelledby="about-content">
+        <div class="pr w">
+          <h2 id="about-content">Who <em>we are</em></h2>
+          <p>The Strategy Room brings compassionate and timely case management, behavioral health interventions, and consulting services to organizations and families of all walks of life. We are a small, experienced, deeply committed team based in St. Louis, Missouri.</p>
+          <blockquote>"Whether you're a family in a time of crisis, or a behavioral health organization in need of process improvement or market share growth, The Strategy Room acts as the arm extension of any need you may have."</blockquote>
+
+          <h2>Why we <em>exist</em></h2>
+          <p>There is a gap in how care is accessed and delivered — both for families and for the organizations trying to serve them. Families navigating terminal illness, unexpected hospital stays, addiction crises, or rare diseases are left to manage impossibly complex systems, often alone.</p>
+          <p>At the same time, behavioral health organizations are stretched thin, needing expert support they cannot afford to hire permanently. We built The Strategy Room to address both sides of that gap.</p>
+          <p>We fly in, make our mark, and then leave you with a sense of peace and ease. No unnecessary entanglement. Just results.</p>
+
+          <h2>Our <em>mission</em></h2>
+          <p>To bring clarity, capability, and compassion to moments that demand the most — empowering families to navigate healthcare with confidence, and helping behavioral health organizations build stronger, more impactful practices.</p>
+
+          <h2>Business <em>details</em></h2>
+          <div class="db" aria-label="Business information">
+            <div><div class="dll">Phone</div><div class="dlv"><a href="tel:3147376044" style="color:inherit;text-decoration:none">314-737-6044</a></div></div>
+            <div><div class="dll">Headquarters</div><div class="dlv">St. Louis, Missouri</div></div>
+            <div><div class="dll">Industry</div><div class="dlv">Behavioral Health &amp; Health Care</div></div>
+            <div><div class="dll">Founded</div><div class="dlv">2023</div></div>
+            <div><div class="dll">Company Type</div><div class="dlv">Privately Held</div></div>
+            <div><div class="dll">Team Size</div><div class="dlv">2–10 specialists</div></div>
           </div>
         </div>
-        <div class="hcard">
-          <div class="hcard-icon">🔓</div>
-          <div>
-            <div class="hcard-main">No referral or waitlist</div>
-            <div class="hcard-sub">Reach out directly — we take it from there</div>
+      </section>
+      <section class="cb" aria-label="Contact prompt">
+        <div class="wn">
+          <h2>Ready to talk about <em>what you're facing</em>?</h2>
+          <p>We're here for the hard conversations — and we know how to help.</p>
+          <button class="bp" onclick="sp('contact')">Get in touch</button>
+        </div>
+      </section>
+    </div>
+    <!-- /ABOUT -->
+
+
+    <!-- ════════════════════════════════════════════════════════════
+         SERVICES PAGE
+    ════════════════════════════════════════════════════════════ -->
+    <div class="pg" id="p-svcs" role="region" aria-label="Services">
+      <div class="ph">
+        <div class="sl" style="justify-content:center;margin-bottom:10px">What we offer</div>
+        <h1>Services for <em>families and organizations</em></h1>
+        <p>Expert support, shaped around your situation — delivered with care, discretion, and calm confidence.</p>
+      </div>
+
+      <section style="background:var(--cream);padding-top:60px" aria-labelledby="fam-svcs-heading">
+        <div class="w">
+          <div class="sch">
+            <div class="cb2">For Families</div>
+            <h2 id="fam-svcs-heading" class="ct">Family &amp; Individual Care</h2>
+          </div>
+          <div class="sl2">
+            <article class="sdc fu">
+              <div class="st2">Crisis Support</div>
+              <h3>Crisis Case Management</h3>
+              <p>We step in immediately, assess the full picture, and build a clear path forward so you can focus on your family.</p>
+              <div class="so">A coordinated care plan and a trusted advocate in your corner.</div>
+            </article>
+            <article class="sdc fu d1">
+              <div class="st2">Hospital Support</div>
+              <h3>Hospital &amp; Care Navigation</h3>
+              <p>We help you understand what's happening, ask the right questions, and ensure your loved one receives the attention they deserve.</p>
+              <div class="so">You stop feeling lost and start feeling informed.</div>
+            </article>
+            <article class="sdc fu d2">
+              <div class="st2">Addiction</div>
+              <h3>Addiction &amp; Intervention Support</h3>
+              <p>We bring professional guidance, emotional steadiness, and a clear process to one of the hardest things a family will ever do.</p>
+              <div class="so">One of the hardest conversations, approached with structure and hope.</div>
+            </article>
+            <article class="sdc fu d3">
+              <div class="st2">Complex Care</div>
+              <h3>Rare Disease &amp; Complex Care Advocacy</h3>
+              <p>We become your expert advocate — researching, connecting, and fighting for access to the right resources.</p>
+              <div class="so">A tireless advocate who moves the needle.</div>
+            </article>
+            <article class="sdc fu d4">
+              <div class="st2">Coordination</div>
+              <h3>Family Guidance &amp; Care Coordination</h3>
+              <p>We provide structure and coordination across providers — keeping the whole picture in view when everything feels fragmented.</p>
+              <div class="so">Your care team moves in sync and you always know what's next.</div>
+            </article>
           </div>
         </div>
-        <a href="tel:3147376044" class="hcard hcard-cta">
-          <div class="hcard-icon">📞</div>
-          <div>
-            <div class="hcard-main">314-737-6044</div>
-            <div class="hcard-sub">Call or text — we're listening</div>
+      </section>
+
+      <section style="background:var(--white)" aria-labelledby="org-svcs-heading">
+        <div class="w">
+          <div class="sch">
+            <div class="cb2 alt">For Organizations</div>
+            <h2 id="org-svcs-heading" class="ct">Organizational &amp; Consulting Services</h2>
           </div>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <div class="ts">
-    <div class="ti">
-      <div class="t-i" onclick="sp('fam')"><span class="td"></span>Behavioral Health Support</div>
-      <div class="t-i" onclick="sp('fam')"><span class="td"></span>Family Crisis Navigation</div>
-      <div class="t-i" onclick="sp('org')"><span class="td"></span>Organizational Consulting</div>
-      <a class="t-i" href="tel:3147376044"><span class="td"></span>314-737-6044</a>
-    </div>
-  </div>
-
-  <section style="background:var(--cream)">
-    <div class="w">
-      <div class="sl">Who we help</div>
-      <h2 class="st">Support shaped around <em>your situation</em></h2>
-      <p class="ss">Whether you're a family in a moment of crisis or an organization looking to grow, The Strategy Room meets you exactly where you are.</p>
-      <div class="wg">
-        <div class="wc fam fu" onclick="sp('fam')">
-          <div class="wt">For Families</div>
-          <h3>Navigating care for a loved one</h3>
-          <p>When the healthcare system feels impossible to move through—whether facing terminal illness, unexpected hospitalization, addiction crisis, or rare disease—we step in and carry the weight with you.</p>
-          <div class="wl">See family services <span>→</span></div>
-        </div>
-        <div class="wc org fu d2" onclick="sp('org')">
-          <div class="wt">For Organizations</div>
-          <h3>Strategic support without the overhead</h3>
-          <p>Behavioral health organizations gain access to expert consulting, interim support, and operational expertise—contracted on your terms, without the cost of a full-time hire.</p>
-          <div class="wl">See org services <span>→</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="ap">
-    <div class="api w">
-      <div style="position:relative" class="fu">
-        <div class="aib"></div>
-        <div class="ast"><div class="asn">2023</div><div class="asl">Founded · St. Louis</div></div>
-      </div>
-      <div class="ac fu d2">
-        <div class="sl">About us</div>
-        <h2 class="st">We fly in, <em>make our mark</em>, and leave you in peace</h2>
-        <blockquote>"We are filling the gap in access to care—giving organizations a way to contract expert services without a full-time hire, and giving families a steady hand through the hardest moments."</blockquote>
-        <p>The Strategy Room brings compassionate and timely case management, behavioral health interventions, and consulting services to organizations and families of all walks of life.</p>
-        <p>Whether you're a family in crisis or a behavioral health organization in need of process improvement or market growth, we act as the arm extension of any need you have.</p>
-        <br>
-        <button class="bs" onclick="sp('about')">Learn more about us</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="wy">
-    <div class="w">
-      <div class="sl">How we work</div>
-      <h2 class="st">From first call to a <em>clear path forward</em></h2>
-      <p class="ss" style="color:rgba(255,255,255,.5);margin-bottom:0">No waitlists. No runaround. A fast, structured process that meets you exactly where you are.</p>
-      <div class="hwg">
-        <div class="hwi fu">
-          <span class="hwn">01</span>
-          <div class="hwt">Tell us what's happening</div>
-          <div class="hwh">One conversation — that's all it takes</div>
-          <p class="hwd">No intake marathon, no referral required. We listen, assess, and understand your full situation in a single call. Family or organization — we start where you are.</p>
-        </div>
-        <div class="hwi fu d2">
-          <span class="hwn">02</span>
-          <div class="hwt">You get a clear plan</div>
-          <div class="hwh">A strategy within 24–48 hours</div>
-          <p class="hwd">A tailored approach — not a template. You'll have a dedicated point of contact, a defined scope of work, and a clear next step before we hang up the phone.</p>
-        </div>
-        <div class="hwi fu d3">
-          <span class="hwn">03</span>
-          <div class="hwt">We carry the work</div>
-          <div class="hwh">Execution, advocacy, results — then we step back</div>
-          <p class="hwd">We handle the coordination, the hard conversations, and the system navigation. When the work is done, we hand off cleanly and leave you in a better place.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="cb">
-    <div class="wn">
-      <div class="sl" style="justify-content:center">Take the first step</div>
-      <h2>When the system feels overwhelming, you <em>don't have to carry it alone</em>.</h2>
-      <p>A single conversation can change your trajectory. Let's find the next right step together.</p>
-      <button class="bp" onclick="sp('contact')">Book a Consultation</button>
-    </div>
-  </section>
-</div>
-
-<!-- ABOUT -->
-<div class="pg" id="p-about">
-  <div class="ph">
-    <div class="sl" style="justify-content:center;margin-bottom:10px">Our story</div>
-    <h1>Built to fill a gap. <em>Built to help.</em></h1>
-    <p>Founded in 2023 with a simple conviction: that families and organizations both deserve access to expert, compassionate support—when and where they need it most.</p>
-  </div>
-  <section style="background:var(--cream)">
-    <div class="pr w">
-      <h2>Who <em>we are</em></h2>
-      <p>The Strategy Room brings compassionate and timely case management, behavioral health interventions, and consulting services to organizations and families of all walks of life. We are a small, experienced, deeply committed team based in St. Louis, Missouri.</p>
-      <blockquote>"Whether you're a family in a time of crisis, or a behavioral health organization in need of process improvement or market share growth, The Strategy Room acts as the arm extension of any need you may have."</blockquote>
-      <h2>Why we <em>exist</em></h2>
-      <p>There's a gap in how care is accessed and delivered—both for families and for the organizations trying to serve them. Families navigating terminal illness, unexpected hospital stays, addiction crises, or rare diseases are left to manage impossibly complex systems, often alone.</p>
-      <p>At the same time, behavioral health organizations are stretched thin, needing expert support they can't afford to hire permanently. We built The Strategy Room to address both.</p>
-      <p>We fly in, make our mark, and then leave you with a sense of peace and ease. No unnecessary entanglement. Just results.</p>
-      <h2>Our <em>mission</em></h2>
-      <p>To bring clarity, capability, and compassion to moments that demand the most—empowering families to navigate healthcare with confidence, and helping behavioral health organizations build stronger, more impactful practices.</p>
-      <h2>Business <em>details</em></h2>
-      <div class="db">
-        <div><div class="dll">Phone</div><div class="dlv">314-737-6044</div></div>
-        <div><div class="dll">Headquarters</div><div class="dlv">St. Louis, Missouri</div></div>
-        <div><div class="dll">Industry</div><div class="dlv">Hospitals and Health Care</div></div>
-        <div><div class="dll">Founded</div><div class="dlv">2023</div></div>
-        <div><div class="dll">Company Type</div><div class="dlv">Privately Held</div></div>
-        <div><div class="dll">Team Size</div><div class="dlv">2–10 specialists</div></div>
-      </div>
-    </div>
-  </section>
-  <section class="cb"><div class="wn"><h2>Ready to talk about <em>what you're facing</em>?</h2><p>We're here for the hard conversations—and we know how to help.</p><button class="bp" onclick="sp('contact')">Get in touch</button></div></section>
-</div>
-
-<!-- SERVICES -->
-<div class="pg" id="p-svcs">
-  <div class="ph">
-    <div class="sl" style="justify-content:center;margin-bottom:10px">What we offer</div>
-    <h1>Services for <em>families and organizations</em></h1>
-    <p>Expert support, shaped around your situation—delivered with care, discretion, and calm confidence.</p>
-  </div>
-  <section style="background:var(--cream);padding-top:60px">
-    <div class="w">
-      <div class="sch"><div class="cb2">For Families</div><div class="ct">Family &amp; Individual Care</div></div>
-      <div class="sl2">
-        <div class="sdc fu"><div class="st2">Crisis Support</div><h4>Crisis Case Management</h4><p>We step in immediately, assess the full picture, and build a clear path forward so you can focus on your family.</p><div class="so">A coordinated care plan and a trusted advocate in your corner.</div></div>
-        <div class="sdc fu d1"><div class="st2">Hospital Support</div><h4>Hospital &amp; Care Navigation</h4><p>We help you understand what's happening, ask the right questions, and ensure your loved one receives the attention they deserve.</p><div class="so">You stop feeling lost and start feeling informed.</div></div>
-        <div class="sdc fu d2"><div class="st2">Addiction</div><h4>Addiction &amp; Intervention Support</h4><p>We bring professional guidance, emotional steadiness, and a clear process to one of the hardest things a family will ever do.</p><div class="so">One of the hardest conversations, approached with structure and hope.</div></div>
-        <div class="sdc fu d3"><div class="st2">Complex Care</div><h4>Rare Disease &amp; Complex Care Advocacy</h4><p>We become your expert advocate—researching, connecting, and fighting for access to the right resources.</p><div class="so">A tireless advocate who moves the needle.</div></div>
-        <div class="sdc fu d4"><div class="st2">Coordination</div><h4>Family Guidance &amp; Care Coordination</h4><p>We provide structure and coordination across providers—keeping the whole picture in view when everything feels fragmented.</p><div class="so">Your care team moves in sync and you always know what's next.</div></div>
-      </div>
-    </div>
-  </section>
-  <section style="background:var(--white)">
-    <div class="w">
-      <div class="sch"><div class="cb2 alt">For Organizations</div><div class="ct">Organizational &amp; Consulting Services</div></div>
-      <div class="sl2">
-        <div class="sdc fu"><div class="st2">Strategy</div><h4>Behavioral Health Consulting</h4><p>Strategic counsel for organizations looking to refine their practice, improve outcomes, and better serve their communities.</p><div class="so">Expert perspective without the cost of a full-time strategist.</div></div>
-        <div class="sdc fu d1"><div class="st2">Interim Support</div><h4>Interim Support Services</h4><p>Bridge a leadership gap or cover a capacity shortage for a defined period—without disrupting your team or budget.</p><div class="so">Your organization keeps moving without missing a step.</div></div>
-        <div class="sdc fu d2"><div class="st2">Operations</div><h4>Process Improvement</h4><p>We audit, diagnose, and rebuild operational workflows—delivering measurable efficiency gains and better patient experiences.</p><div class="so">Your team works smarter, with less friction and more impact.</div></div>
-        <div class="sdc fu d3"><div class="st2">Growth</div><h4>Growth &amp; Operational Strategy</h4><p>We bring strategic rigor to help you grow intentionally and sustainably—entering new markets or improving margins.</p><div class="so">You grow with clarity, not chaos.</div></div>
-        <div class="sdc fu d4"><div class="st2">Flexible Contracts</div><h4>Specialized Contract Support</h4><p>Access senior expertise on a contract basis—without the commitment or overhead of a full-time hire.</p><div class="so">Exactly the right support, for exactly as long as you need it.</div></div>
-      </div>
-    </div>
-  </section>
-  <section class="cb"><div class="wn"><h2>Not sure where to <em>start</em>?</h2><p>That's exactly what we're here for. Tell us what's happening and we'll help you find the next right step.</p><button class="bp" onclick="sp('contact')">Start a conversation</button></div></section>
-</div>
-
-<!-- FOR FAMILIES -->
-<div class="pg" id="p-fam">
-  <div class="ph">
-    <div class="sl" style="justify-content:center;margin-bottom:10px">For Families</div>
-    <h1>You shouldn't have to navigate this <em>alone</em>.</h1>
-    <p>From unexpected hospital stays to long-term care crises, we provide the guidance, advocacy, and steady hand your family needs.</p>
-  </div>
-  <section style="background:var(--cream);padding-top:60px">
-    <div class="w">
-      <div class="sl2">
-        <div class="sdc fu"><div class="st2">Crisis Support</div><h4>Crisis Case Management</h4><p>Immediate, structured support when a family member faces an unexpected health or behavioral crisis. We take the coordination burden off your plate and build a clear, humane plan of action.</p><div class="so">A trusted guide from moment of crisis to a stable next step.</div></div>
-        <div class="sdc fu d1"><div class="st2">Hospital Support</div><h4>Hospital &amp; Care Navigation</h4><p>We help families understand diagnoses, communicate with care teams, manage transitions, and protect their loved one's interests inside an often-impersonal system.</p><div class="so">Clarity and confidence during one of the most stressful experiences a family can face.</div></div>
-        <div class="sdc fu d2"><div class="st2">Addiction</div><h4>Addiction &amp; Intervention Support</h4><p>Guided, professional support for families preparing an intervention or seeking to connect a loved one with treatment. We hold the process steady so you can hold your family together.</p><div class="so">A structured, compassionate path through one of life's hardest conversations.</div></div>
-        <div class="sdc fu d3"><div class="st2">Complex Care</div><h4>Rare Disease &amp; Complex Care Advocacy</h4><p>When a diagnosis is rare, the roadmap is thin. We research, connect, and advocate to help your family access the specialists, resources, and support you deserve.</p><div class="so">Someone in your corner who doesn't stop until you have answers.</div></div>
-        <div class="sdc fu d4"><div class="st2">Coordination</div><h4>Family Guidance &amp; Care Coordination</h4><p>For long-term or complex care situations, we serve as the connective tissue—coordinating across providers, schedules, and plans so your family can focus on being present.</p><div class="so">Peace of mind that someone is managing the whole picture.</div></div>
-      </div>
-    </div>
-  </section>
-  <section class="cb"><div class="wn"><h2>When the system feels overwhelming, you <em>don't have to carry it alone</em>.</h2><p>A conversation costs nothing. Let us help you find the next right step.</p><button class="bp" onclick="sp('contact')">Reach out today</button></div></section>
-</div>
-
-<!-- FOR ORGS -->
-<div class="pg" id="p-org">
-  <div class="ph">
-    <div class="sl" style="justify-content:center;margin-bottom:10px">For Organizations</div>
-    <h1>Expert support, <em>without the overhead</em>.</h1>
-    <p>Behavioral health organizations gain access to senior-level consulting, interim support, and strategic expertise—contracted on your terms.</p>
-  </div>
-  <section style="background:var(--cream);padding-top:60px">
-    <div class="w">
-      <div class="sl2">
-        <div class="sdc fu"><div class="st2">Strategy</div><h4>Behavioral Health Consulting</h4><p>Deep, practical consulting for organizations navigating change, growth, or challenge in the behavioral health space. Strategic clarity rooted in real-world experience.</p><div class="so">Measurable improvement in direction, operations, and outcomes.</div></div>
-        <div class="sdc fu d1"><div class="st2">Interim Support</div><h4>Interim Support Services</h4><p>When you need experienced hands without a full-time commitment, we step in—filling critical roles, covering capacity gaps, and ensuring continuity during transitions.</p><div class="so">No disruption to momentum. No compromise on quality.</div></div>
-        <div class="sdc fu d2"><div class="st2">Operations</div><h4>Process Improvement</h4><p>We examine your workflows, identify friction points, and redesign processes that hold your team back—making operations smoother, faster, and more patient-centered.</p><div class="so">Leaner operations, better experiences, and a team that feels the difference.</div></div>
-        <div class="sdc fu d3"><div class="st2">Growth</div><h4>Growth &amp; Operational Strategy</h4><p>From market expansion to revenue diversification, we build strategic frameworks grounded in data and behavioral health realities—not generic business theory.</p><div class="so">Sustainable growth built on clear strategy, not guesswork.</div></div>
-        <div class="sdc fu d4"><div class="st2">Flexible Contracts</div><h4>Specialized Contract Support</h4><p>Access the exact expertise you need, scoped precisely to your situation. We integrate with your team, produce real results, and transition out cleanly when the work is done.</p><div class="so">Exactly the right support, for exactly as long as you need it.</div></div>
-      </div>
-    </div>
-  </section>
-  <section class="cb"><div class="wn"><h2>Let's talk about what your <em>organization needs</em>.</h2><p>No long pitch. Just a focused conversation about where you are and where you want to be.</p><button class="bp" onclick="sp('contact')">Start the conversation</button></div></section>
-</div>
-
-<!-- CONTACT -->
-<div class="pg" id="p-contact">
-  <div class="ph">
-    <div class="sl" style="justify-content:center;margin-bottom:10px">Get in touch</div>
-    <h1>Tell us what's <em>happening</em>.</h1>
-    <p>We'll help you find the next right step. No pressure, no jargon—just a real conversation.</p>
-  </div>
-  <section style="background:var(--cream);padding:72px 24px">
-    <div class="cl">
-      <div class="ci">
-        <h2>We're here when <em>you're ready</em>.</h2>
-        <p>Whether you're in the middle of a crisis, planning ahead, or simply not sure where to begin—reach out. The right conversation at the right time can change everything.</p>
-        <div class="cp"><div class="pi">📞</div><div><div class="pl">Call or text us</div><a href="tel:3147376044" class="pn">314-737-6044</a></div></div>
-        <div class="cloc"><div class="pi">📍</div><div><div class="pl">Headquarters</div><div style="font-family:var(--fd);font-size:1.15rem;color:var(--charcoal);font-weight:500">St. Louis, Missouri</div></div></div>
-      </div>
-      <div class="cfw fu">
-        <div class="ft">Book a Consultation</div>
-        <div class="fsb">"Tell us what's happening. We'll help you find the next right step."</div>
-        <form id="cf" onsubmit="hs(event)">
-          <div class="fr">
-            <div class="fg"><label>First name</label><input type="text" placeholder="Jane" required></div>
-            <div class="fg"><label>Last name</label><input type="text" placeholder="Smith" required></div>
+          <div class="sl2">
+            <article class="sdc fu">
+              <div class="st2">Strategy</div>
+              <h3>Behavioral Health Consulting</h3>
+              <p>Strategic counsel for organizations looking to refine their practice, improve outcomes, and better serve their communities.</p>
+              <div class="so">Expert perspective without the cost of a full-time strategist.</div>
+            </article>
+            <article class="sdc fu d1">
+              <div class="st2">Interim Support</div>
+              <h3>Interim Support Services</h3>
+              <p>Bridge a leadership gap or cover a capacity shortage for a defined period — without disrupting your team or budget.</p>
+              <div class="so">Your organization keeps moving without missing a step.</div>
+            </article>
+            <article class="sdc fu d2">
+              <div class="st2">Operations</div>
+              <h3>Process Improvement</h3>
+              <p>We audit, diagnose, and rebuild operational workflows — delivering measurable efficiency gains and better patient experiences.</p>
+              <div class="so">Your team works smarter, with less friction and more impact.</div>
+            </article>
+            <article class="sdc fu d3">
+              <div class="st2">Growth</div>
+              <h3>Growth &amp; Operational Strategy</h3>
+              <p>We bring strategic rigor to help you grow intentionally and sustainably — entering new markets or improving margins.</p>
+              <div class="so">You grow with clarity, not chaos.</div>
+            </article>
+            <article class="sdc fu d4">
+              <div class="st2">Flexible Contracts</div>
+              <h3>Specialized Contract Support</h3>
+              <p>Access senior expertise on a contract basis — without the commitment or overhead of a full-time hire.</p>
+              <div class="so">Exactly the right support, for exactly as long as you need it.</div>
+            </article>
           </div>
-          <div class="fg"><label>Email address</label><input type="email" placeholder="jane@example.com" required></div>
-          <div class="fg"><label>Phone number <span style="font-weight:400;opacity:.5;font-size:.9em">(optional)</span></label><input type="tel" placeholder="(314) 555-0100"></div>
-          <div class="fg"><label>I am reaching out as a</label><select><option value="">Select one...</option><option>Family member or caregiver</option><option>Individual seeking support</option><option>Behavioral health organization</option><option>Other</option></select></div>
-          <div class="fg"><label>Tell us what's going on</label><textarea placeholder="Share as much or as little as you'd like. We're here to listen." required></textarea></div>
-          <button type="submit" class="fsub">Send Message →</button>
-        </form>
-        <div id="fs" style="display:none;margin-top:18px;background:var(--sage-pale);padding:22px;border-radius:12px;text-align:center"><div style="font-family:var(--fd);font-size:1.25rem;color:var(--sage-deep);margin-bottom:5px">Thank you for reaching out.</div><div style="font-size:.83rem;color:var(--muted)">We'll be in touch within one business day.</div></div>
-        <div class="pay-wrap" id="pay-wrap">
-          <div class="pay-label">Or pay to book a consultation</div>
-          <!-- Apple Pay / Google Pay slot — shown by Stripe JS when browser supports it -->
-          <div id="payment-request-button"></div>
-          <div class="pay-btns">
-            <!-- TODO: Replace with your PayPal.me URL, e.g. https://paypal.me/YourHandle/150 -->
-            <a href="https://paypal.me/YOURHANDLE" target="_blank" rel="noopener" class="pay-btn pay-btn-paypal">PayPal</a>
-            <!-- TODO: Replace with your Venmo handle, e.g. https://venmo.com/YourHandle -->
-            <a href="https://venmo.com/YOURHANDLE" target="_blank" rel="noopener" class="pay-btn pay-btn-venmo">Venmo</a>
-            <!-- TODO: Wire up your Stripe Payment Link for card payments -->
-            <button type="button" class="pay-btn pay-btn-card" onclick="initCardPay()">💳 Card</button>
+        </div>
+      </section>
+
+      <section class="cb" aria-label="Contact prompt">
+        <div class="wn">
+          <h2>Not sure where to <em>start</em>?</h2>
+          <p>That's exactly what we're here for. Tell us what's happening and we'll help you find the next right step.</p>
+          <button class="bp" onclick="sp('contact')">Start a conversation</button>
+        </div>
+      </section>
+    </div>
+    <!-- /SERVICES -->
+
+
+    <!-- ════════════════════════════════════════════════════════════
+         FOR FAMILIES PAGE
+    ════════════════════════════════════════════════════════════ -->
+    <div class="pg" id="p-fam" role="region" aria-label="Services for families">
+      <div class="ph">
+        <div class="sl" style="justify-content:center;margin-bottom:10px">For Families</div>
+        <h1>You shouldn't have to navigate this <em>alone</em>.</h1>
+        <p>From unexpected hospital stays to long-term care crises, we provide the guidance, advocacy, and steady hand your family needs.</p>
+      </div>
+      <section style="background:var(--cream);padding-top:60px" aria-label="Family services">
+        <div class="w">
+          <div class="sl2">
+            <article class="sdc fu">
+              <div class="st2">Crisis Support</div>
+              <h2>Crisis Case Management</h2>
+              <p>Immediate, structured support when a family member faces an unexpected health or behavioral crisis. We take the coordination burden off your plate and build a clear, humane plan of action.</p>
+              <div class="so">A trusted guide from moment of crisis to a stable next step.</div>
+            </article>
+            <article class="sdc fu d1">
+              <div class="st2">Hospital Support</div>
+              <h2>Hospital &amp; Care Navigation</h2>
+              <p>We help families understand diagnoses, communicate with care teams, manage transitions, and protect their loved one's interests inside an often-impersonal system.</p>
+              <div class="so">Clarity and confidence during one of the most stressful experiences a family can face.</div>
+            </article>
+            <article class="sdc fu d2">
+              <div class="st2">Addiction</div>
+              <h2>Addiction &amp; Intervention Support</h2>
+              <p>Guided, professional support for families preparing an intervention or seeking to connect a loved one with treatment. We hold the process steady so you can hold your family together.</p>
+              <div class="so">A structured, compassionate path through one of life's hardest conversations.</div>
+            </article>
+            <article class="sdc fu d3">
+              <div class="st2">Complex Care</div>
+              <h2>Rare Disease &amp; Complex Care Advocacy</h2>
+              <p>When a diagnosis is rare, the roadmap is thin. We research, connect, and advocate to help your family access the specialists, resources, and support you deserve.</p>
+              <div class="so">Someone in your corner who doesn't stop until you have answers.</div>
+            </article>
+            <article class="sdc fu d4">
+              <div class="st2">Coordination</div>
+              <h2>Family Guidance &amp; Care Coordination</h2>
+              <p>For long-term or complex care situations, we serve as the connective tissue — coordinating across providers, schedules, and plans so your family can focus on being present.</p>
+              <div class="so">Peace of mind that someone is managing the whole picture.</div>
+            </article>
           </div>
-          <div class="pay-secure">🔒 Secured by Stripe &nbsp;·&nbsp; Apple Pay &amp; Google Pay also accepted</div>
+        </div>
+      </section>
+      <section class="cb" aria-label="Contact prompt">
+        <div class="wn">
+          <h2>When the system feels overwhelming, <em>you don't have to carry it alone.</em></h2>
+          <p>A conversation costs nothing. Let us help you find the next right step.</p>
+          <button class="bp" onclick="sp('contact')">Reach out today</button>
+        </div>
+      </section>
+    </div>
+    <!-- /FOR FAMILIES -->
+
+
+    <!-- ════════════════════════════════════════════════════════════
+         FOR ORGANIZATIONS PAGE
+    ════════════════════════════════════════════════════════════ -->
+    <div class="pg" id="p-org" role="region" aria-label="Services for organizations">
+      <div class="ph">
+        <div class="sl" style="justify-content:center;margin-bottom:10px">For Organizations</div>
+        <h1>Expert support, <em>without the overhead</em>.</h1>
+        <p>Behavioral health organizations gain access to senior-level consulting, interim support, and strategic expertise — contracted on your terms.</p>
+      </div>
+      <section style="background:var(--cream);padding-top:60px" aria-label="Organization services">
+        <div class="w">
+          <div class="sl2">
+            <article class="sdc fu">
+              <div class="st2">Strategy</div>
+              <h2>Behavioral Health Consulting</h2>
+              <p>Deep, practical consulting for organizations navigating change, growth, or challenge in the behavioral health space. Strategic clarity rooted in real-world experience.</p>
+              <div class="so">Measurable improvement in direction, operations, and outcomes.</div>
+            </article>
+            <article class="sdc fu d1">
+              <div class="st2">Interim Support</div>
+              <h2>Interim Support Services</h2>
+              <p>When you need experienced hands without a full-time commitment, we step in — filling critical roles, covering capacity gaps, and ensuring continuity during transitions.</p>
+              <div class="so">No disruption to momentum. No compromise on quality.</div>
+            </article>
+            <article class="sdc fu d2">
+              <div class="st2">Operations</div>
+              <h2>Process Improvement</h2>
+              <p>We examine your workflows, identify friction points, and redesign processes that hold your team back — making operations smoother, faster, and more patient-centered.</p>
+              <div class="so">Leaner operations, better experiences, and a team that feels the difference.</div>
+            </article>
+            <article class="sdc fu d3">
+              <div class="st2">Growth</div>
+              <h2>Growth &amp; Operational Strategy</h2>
+              <p>From market expansion to revenue diversification, we build strategic frameworks grounded in data and behavioral health realities — not generic business theory.</p>
+              <div class="so">Sustainable growth built on clear strategy, not guesswork.</div>
+            </article>
+            <article class="sdc fu d4">
+              <div class="st2">Flexible Contracts</div>
+              <h2>Specialized Contract Support</h2>
+              <p>Access the exact expertise you need, scoped precisely to your situation. We integrate with your team, produce real results, and transition out cleanly when the work is done.</p>
+              <div class="so">Exactly the right support, for exactly as long as you need it.</div>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="cb" aria-label="Contact prompt">
+        <div class="wn">
+          <h2>Let's talk about what your <em>organization needs</em>.</h2>
+          <p>No long pitch. Just a focused conversation about where you are and where you want to be.</p>
+          <button class="bp" onclick="sp('contact')">Start the conversation</button>
+        </div>
+      </section>
+    </div>
+    <!-- /FOR ORGANIZATIONS -->
+
+
+    <!-- ════════════════════════════════════════════════════════════
+         CONTACT PAGE
+    ════════════════════════════════════════════════════════════ -->
+    <div class="pg" id="p-contact" role="region" aria-label="Contact">
+      <div class="ph">
+        <div class="sl" style="justify-content:center;margin-bottom:10px">Get in touch</div>
+        <h1>Tell us what's <em>happening</em>.</h1>
+        <p>We'll help you find the next right step. No pressure, no jargon — just a real conversation.</p>
+      </div>
+
+      <section style="background:var(--cream);padding:72px 24px" aria-label="Contact information and form">
+        <div class="cl">
+
+          <!-- Left: contact info -->
+          <div class="ci">
+            <h2>We're here when <em>you're ready</em>.</h2>
+            <p>Whether you're in the middle of a crisis, planning ahead, or simply not sure where to begin — reach out. The right conversation at the right time can change everything.</p>
+
+            <div class="cp">
+              <div class="pi" aria-hidden="true">📞</div>
+              <div>
+                <div class="pl">Call or text us</div>
+                <a href="tel:3147376044" class="pn" aria-label="Call us at 314-737-6044">314-737-6044</a>
+              </div>
+            </div>
+
+            <div class="cloc">
+              <div class="pi" aria-hidden="true">📍</div>
+              <div>
+                <div class="pl">Headquarters</div>
+                <div style="font-family:var(--fd);font-size:1.15rem;color:var(--charcoal);font-weight:500">St. Louis, Missouri</div>
+              </div>
+            </div>
+
+            <!-- Crisis disclaimer in contact column -->
+            <div class="ci-crisis" role="note" aria-label="Important: emergency resources">
+              <strong>Not an emergency service.</strong> If you or someone you know is in immediate danger, call <a href="tel:911">911</a>. For 24/7 mental health crisis support, call or text <a href="tel:988">988</a> (Suicide &amp; Crisis Lifeline). The Strategy Room provides professional case management and consulting — not emergency crisis intervention.
+            </div>
+          </div>
+
+          <!-- Right: form -->
+          <div class="cfw fu">
+            <div class="ft">Book a Consultation</div>
+            <p class="fsb">"Tell us what's happening. We'll help you find the next right step."</p>
+
+            <!--
+              FORM CONFIGURATION (HUMAN REVIEW REQUIRED):
+              1. Create a free account at https://formspree.io
+              2. Create a new form and copy your endpoint URL
+              3. Replace YOUR_FORM_ID below with your actual form ID
+              4. Set up email notifications in your Formspree dashboard
+            -->
+            <form
+              id="cf"
+              action="https://formspree.io/f/YOUR_FORM_ID"
+              method="POST"
+              novalidate
+              aria-label="Consultation inquiry form"
+            >
+              <!-- Formspree honeypot (spam prevention) -->
+              <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+              <!-- Redirect after submission (only used if JS fails) -->
+              <input type="hidden" name="_next" value="https://thestrategyroomstl.com/#contact">
+
+              <div class="fr">
+                <div class="fg">
+                  <label for="first-name">First name</label>
+                  <input
+                    type="text"
+                    id="first-name"
+                    name="first-name"
+                    placeholder="Jane"
+                    required
+                    autocomplete="given-name"
+                    aria-required="true"
+                  >
+                </div>
+                <div class="fg">
+                  <label for="last-name">Last name</label>
+                  <input
+                    type="text"
+                    id="last-name"
+                    name="last-name"
+                    placeholder="Smith"
+                    required
+                    autocomplete="family-name"
+                    aria-required="true"
+                  >
+                </div>
+              </div>
+
+              <div class="fg">
+                <label for="email">Email address</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="jane@example.com"
+                  required
+                  autocomplete="email"
+                  aria-required="true"
+                >
+              </div>
+
+              <div class="fg">
+                <label for="phone">
+                  Phone number
+                  <span style="font-weight:400;opacity:.5;font-size:.9em">(optional)</span>
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  placeholder="(314) 555-0100"
+                  autocomplete="tel"
+                >
+              </div>
+
+              <div class="fg">
+                <label for="contact-type">I am reaching out as a</label>
+                <select id="contact-type" name="contact-type" aria-required="false">
+                  <option value="">Select one…</option>
+                  <option value="family">Family member or caregiver</option>
+                  <option value="individual">Individual seeking support</option>
+                  <option value="organization">Behavioral health organization</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div class="fg">
+                <label for="message">Tell us what's going on</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  placeholder="Share as much or as little as you'd like. We're here to listen."
+                  required
+                  aria-required="true"
+                ></textarea>
+              </div>
+
+              <p class="form-disclaimer">
+                By submitting this form you understand that The Strategy Room is not a crisis hotline or emergency service. For immediate mental health emergencies, call <a href="tel:988">988</a> or <a href="tel:911">911</a>. We typically respond within one business day.
+              </p>
+
+              <button type="submit" class="fsub">Send Message →</button>
+            </form>
+
+            <!-- Error message (shown on submit failure) -->
+            <div id="fe" class="form-error" role="alert" aria-live="assertive"></div>
+
+            <!-- Success message (shown after successful submission) -->
+            <div
+              id="fs"
+              class="form-success"
+              style="display:none"
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              <div class="form-success-title">Thank you for reaching out.</div>
+              <div class="form-success-sub">We'll be in touch within one business day. If your situation is urgent, please call us at <a href="tel:3147376044" style="color:var(--sage-deep)">314-737-6044</a>.</div>
+            </div>
+
+            <!-- Payment / booking section -->
+            <div class="pay-wrap" id="pay-wrap" aria-label="Payment options">
+              <div class="pay-label">Or pay to book your consultation</div>
+
+              <!--
+                PAYMENT CONFIGURATION (HUMAN REVIEW REQUIRED):
+                1. Go to https://dashboard.stripe.com/payment-links
+                2. Create a payment link for your $150 consultation fee
+                3. Replace '#' in STRIPE_PAYMENT_LINK in js/app.js with your URL
+                   The button below is wired by app.js once that value is set.
+              -->
+              <a
+                href="#"
+                id="stripe-payment-link"
+                class="pay-btn-primary"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Pay $150 to book a consultation via Stripe"
+              >
+                <span aria-hidden="true">💳</span>
+                Pay &amp; Book — $150 Consultation
+              </a>
+
+              <div class="pay-secure">
+                <span aria-hidden="true">🔒</span> Secure payment via Stripe &nbsp;·&nbsp; Cards, Apple Pay &amp; Google Pay accepted
+              </div>
+              <p class="pay-note">
+                Not ready to pay? <button type="button" class="link-btn" onclick="document.getElementById('cf').scrollIntoView({behavior:'smooth'})">Send a message</button> instead — it's free and there's no commitment.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+    <!-- /CONTACT -->
+
+  </main>
+
+
+  <!-- ── Footer ─────────────────────────────────────────────────────────────── -->
+  <footer role="contentinfo">
+    <div class="fo">
+      <div>
+        <div class="fb">The <span>Strategy Room</span></div>
+        <p class="ftag">Compassionate case management, behavioral health intervention, and consulting support for families and organizations.</p>
+        <div class="fca">
+          <a href="tel:3147376044" aria-label="Call us at 314-737-6044">314-737-6044</a>
+          <span style="font-size:.78rem;color:rgba(255,255,255,.3)">St. Louis, Missouri</span>
         </div>
       </div>
+      <div class="fc">
+        <h5>Navigate</h5>
+        <button onclick="sp('home')"    aria-label="Go to home page">Home</button>
+        <button onclick="sp('about')"   aria-label="Go to about page">About</button>
+        <button onclick="sp('svcs')"    aria-label="Go to services page">Services</button>
+        <button onclick="sp('contact')" aria-label="Go to contact page">Contact</button>
+      </div>
+      <div class="fc">
+        <h5>Services</h5>
+        <button onclick="sp('fam')"     aria-label="Family services">For Families</button>
+        <button onclick="sp('org')"     aria-label="Organization services">For Organizations</button>
+        <button onclick="sp('contact')" aria-label="Book a consultation">Book a Consultation</button>
+        <a href="disclaimer.html">Service Disclaimer</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
     </div>
-  </section>
-</div>
 
-<footer>
-  <div class="fo">
-    <div>
-      <div class="fb">The <span>Strategy Room</span></div>
-      <div class="ftag">Compassionate case management, behavioral health intervention, and consulting support for families and organizations.</div>
-      <div class="fca"><a href="tel:3147376044">314-737-6044</a><span style="font-size:.78rem;color:rgba(255,255,255,.3)">St. Louis, Missouri</span></div>
+    <div class="footer-disclaimer" role="note">
+      The Strategy Room provides professional consulting and case management services. We are not a licensed clinical practice, crisis hotline, or emergency service. For mental health emergencies, call or text <a href="tel:988">988</a> or call <a href="tel:911">911</a>. &nbsp;·&nbsp; <a href="disclaimer.html">Full Disclaimer</a> &nbsp;·&nbsp; <a href="privacy.html">Privacy Policy</a>
     </div>
-    <div class="fc"><h5>Navigate</h5><a onclick="sp('home')">Home</a><a onclick="sp('about')">About</a><a onclick="sp('svcs')">Services</a><a onclick="sp('contact')">Contact</a></div>
-    <div class="fc"><h5>Services</h5><a onclick="sp('fam')">For Families</a><a onclick="sp('org')">For Organizations</a><a onclick="sp('contact')">Book a Consultation</a></div>
-  </div>
-  <div class="fbot"><span>© 2025 The Strategy Room. All rights reserved.</span><span>St. Louis, MO · Privately Held · Est. 2023</span></div>
-</footer>
 
-<script>
-const pm={home:'p-home',about:'p-about',svcs:'p-svcs',fam:'p-fam',org:'p-org',contact:'p-contact'};
-function sp(k){
-  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
-  const el=document.getElementById(pm[k]);
-  if(el)el.classList.add('on');
-  document.querySelectorAll('.nl a[data-p]').forEach(a=>a.classList.toggle('act',a.dataset.p===k));
-  window.scrollTo({top:0,behavior:'smooth'});
-  setTimeout(tf,120);
-}
-function tf(){
-  document.querySelectorAll('.fu:not(.v)').forEach(el=>{
-    const r=el.getBoundingClientRect();
-    if(r.top<window.innerHeight-50)el.classList.add('v');
-  });
-}
-window.addEventListener('scroll',()=>{
-  document.getElementById('nav').classList.toggle('sc',window.scrollY>20);
-  tf();
-});
-function hs(e){e.preventDefault();document.getElementById('cf').style.display='none';document.getElementById('fs').style.display='block';}
+    <div class="fbot">
+      <span>&copy; 2026 The Strategy Room. All rights reserved.</span>
+      <span>St. Louis, MO &nbsp;·&nbsp; Privately Held &nbsp;·&nbsp; Est. 2023</span>
+    </div>
+  </footer>
 
-// ─── Apple Pay / Google Pay via Stripe ───────────────────────────────────────
-// TODO: Replace with your live Stripe publishable key (pk_live_...)
-// Get it from https://dashboard.stripe.com/apikeys
-const STRIPE_KEY = 'pk_live_YOUR_KEY_HERE';
+  <!-- ── App Script ──────────────────────────────────────────────────────────── -->
+  <script src="js/app.js"></script>
 
-// TODO: Set the consultation fee in cents (e.g. 15000 = $150.00)
-const CONSULT_FEE_CENTS = 15000;
-const CONSULT_FEE_LABEL = 'Strategy Room Consultation';
+  <!-- Inline: nav button style fix (needed because .nl targets a/button equally) -->
+  <style>
+    /* Make nav buttons look identical to links */
+    .nl-item {
+      font-size: .78rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 6px 11px;
+      border-radius: 20px;
+      transition: all .2s;
+      cursor: pointer;
+      white-space: nowrap;
+      background: none;
+      border: none;
+      font-family: var(--fb);
+    }
+    .nl-item:hover, .nl-item.act {
+      color: var(--charcoal);
+      background: var(--sage-pale);
+    }
+    .nl-item.nc {
+      background: var(--charcoal) !important;
+      color: var(--cream) !important;
+      padding: 8px 18px !important;
+      border-radius: var(--r) !important;
+      font-size: .76rem !important;
+      font-weight: 600 !important;
+      letter-spacing: .04em !important;
+      text-transform: uppercase;
+    }
+    .nl-item.nc:hover { background: var(--sage-deep) !important; color: #fff !important; }
+    /* Ensure .wc buttons fill their grid cell */
+    button.wc { width: 100%; text-align: left; }
+  </style>
 
-(function initStripe() {
-  if (!STRIPE_KEY || STRIPE_KEY.includes('YOUR_KEY')) return; // skip if not configured
-  const s = document.createElement('script');
-  s.src = 'https://js.stripe.com/v3/';
-  s.onload = function () {
-    const stripe = Stripe(STRIPE_KEY);
-    const pr = stripe.paymentRequest({
-      country: 'US',
-      currency: 'usd',
-      total: { label: CONSULT_FEE_LABEL, amount: CONSULT_FEE_CENTS },
-      requestPayerName: true,
-      requestPayerEmail: true,
-    });
-    const elements = stripe.elements();
-    const prBtn = elements.create('paymentRequestButton', {
-      paymentRequest: pr,
-      style: { paymentRequestButton: { type: 'book', theme: 'dark', height: '48px' } },
-    });
-    pr.canMakePayment().then(function (result) {
-      if (result) {
-        prBtn.mount('#payment-request-button');
-      } else {
-        document.getElementById('payment-request-button').style.display = 'none';
-      }
-    });
-    pr.on('paymentmethod', function (e) {
-      // TODO: Create a PaymentIntent on your server and confirm here.
-      // See https://stripe.com/docs/payments/accept-a-payment
-      // Example: fetch('/create-payment-intent', ...).then(...)
-      // For a no-backend option, use a Stripe Payment Link instead:
-      // https://stripe.com/docs/payment-links
-      console.warn('TSR: wire up PaymentIntent creation on your backend.');
-      e.complete('fail');
-    });
-  };
-  document.head.appendChild(s);
-})();
-
-function initCardPay() {
-  // TODO: Replace with your Stripe Payment Link URL for card payments
-  // Create one at https://dashboard.stripe.com/payment-links
-  alert('Wire up your Stripe Payment Link or card form here.');
-}
-if('IntersectionObserver' in window){
-  const o=new IntersectionObserver(en=>en.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v');}),{threshold:.08});
-  document.querySelectorAll('.fu').forEach(el=>o.observe(el));
-}
-setTimeout(tf,200);
-</script>
 </body>
 </html>
