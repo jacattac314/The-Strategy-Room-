@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - claude/deploy-strategy-room-site-h4HDa
+      - master
       - main
 
 permissions:
