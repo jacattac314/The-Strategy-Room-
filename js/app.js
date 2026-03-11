@@ -209,6 +209,165 @@ document.querySelectorAll('.faq-question').forEach(btn => {
   });
 });
 
+/* ─── Hamburger Menu Toggle ──────────────────────────────────────────────────── */
+
+const hamburgerBtn = document.getElementById('hamburger');
+const navList      = document.getElementById('nav-list');
+
+function closeMenu() {
+  if (hamburgerBtn && navList) {
+    hamburgerBtn.classList.remove('open');
+    navList.classList.remove('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+  }
+}
+
+if (hamburgerBtn && navList) {
+  hamburgerBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = navList.classList.toggle('open');
+    hamburgerBtn.classList.toggle('open', isOpen);
+    hamburgerBtn.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!hamburgerBtn.contains(e.target) && !navList.contains(e.target)) {
+      closeMenu();
+    }
+  });
+
+  // Close menu on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+}
+
+/* ─── Button Ripple Effect ───────────────────────────────────────────────────── */
+
+function addRipple(btn, e) {
+  const rect   = btn.getBoundingClientRect();
+  const size   = Math.max(rect.width, rect.height) * 2;
+  const x      = e.clientX - rect.left - size / 2;
+  const y      = e.clientY - rect.top  - size / 2;
+  const ripple = document.createElement('span');
+  ripple.className = 'btn-ripple';
+  ripple.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px`;
+  btn.appendChild(ripple);
+  ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
+}
+
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.bp, .bs, .fsub');
+  if (btn) addRipple(btn, e);
+});
+
+/* ─── Inline Form Validation ─────────────────────────────────────────────────── */
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const validationRules = [
+  {
+    inputId: 'first-name',
+    groupId: 'fg-first-name',
+    msgId:   'msg-first-name',
+    validate: (v) => v.trim().length >= 2,
+    errorMsg: 'Please enter at least 2 characters.',
+    okMsg:    'Looks good!',
+  },
+  {
+    inputId: 'last-name',
+    groupId: 'fg-last-name',
+    msgId:   'msg-last-name',
+    validate: (v) => v.trim().length >= 2,
+    errorMsg: 'Please enter at least 2 characters.',
+    okMsg:    'Looks good!',
+  },
+  {
+    inputId: 'email',
+    groupId: 'fg-email',
+    msgId:   'msg-email',
+    validate: (v) => EMAIL_RE.test(v.trim()),
+    errorMsg: 'Please enter a valid email address.',
+    okMsg:    'Valid email address.',
+  },
+  {
+    inputId: 'message',
+    groupId: 'fg-message',
+    msgId:   'msg-message',
+    validate: (v) => v.trim().length >= 20,
+    errorMsg: `Please write at least 20 characters (${0} so far).`,
+    errorMsgDynamic: (v) => `Please write at least 20 characters (${v.trim().length} so far).`,
+    okMsg:    'Message received.',
+  },
+];
+
+function validateField(rule, value, touched) {
+  const group   = document.getElementById(rule.groupId);
+  const msgEl   = document.getElementById(rule.msgId);
+  if (!group || !msgEl) return rule.validate(value);
+
+  const isValid = rule.validate(value);
+  const hasVal  = value.trim().length > 0;
+
+  if (!touched && !hasVal) {
+    // Not yet touched — clear state
+    group.classList.remove('valid', 'invalid');
+    msgEl.textContent = '';
+    return false;
+  }
+
+  if (isValid) {
+    group.classList.add('valid');
+    group.classList.remove('invalid');
+    msgEl.textContent = rule.okMsg;
+  } else {
+    group.classList.add('invalid');
+    group.classList.remove('valid');
+    const msg = (rule.errorMsgDynamic && hasVal) ? rule.errorMsgDynamic(value) : rule.errorMsg;
+    msgEl.textContent = msg;
+  }
+  return isValid;
+}
+
+function checkFormValidity() {
+  if (!contactForm) return;
+  const submitBtn = contactForm.querySelector('.fsub');
+  if (!submitBtn) return;
+  const allValid = validationRules.every(rule => {
+    const el = document.getElementById(rule.inputId);
+    return el && rule.validate(el.value);
+  });
+  submitBtn.disabled = !allValid;
+}
+
+if (contactForm) {
+  // Disable submit initially
+  const submitBtn = contactForm.querySelector('.fsub');
+  if (submitBtn) submitBtn.disabled = true;
+
+  validationRules.forEach(rule => {
+    const input = document.getElementById(rule.inputId);
+    if (!input) return;
+
+    // Validate on blur (first touch)
+    input.addEventListener('blur', () => {
+      validateField(rule, input.value, true);
+      checkFormValidity();
+    });
+
+    // Validate on input (after first touch — check dirty state via class)
+    input.addEventListener('input', () => {
+      const group = document.getElementById(rule.groupId);
+      const hasBeenTouched = group && (group.classList.contains('valid') || group.classList.contains('invalid'));
+      if (hasBeenTouched || input.value.trim().length > 0) {
+        validateField(rule, input.value, true);
+      }
+      checkFormValidity();
+    });
+  });
+}
+
 /* ─── Init ───────────────────────────────────────────────────────────────────── */
 
 document.addEventListener('DOMContentLoaded', () => {

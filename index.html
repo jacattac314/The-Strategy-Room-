@@ -104,13 +104,24 @@
       <button class="logo" onclick="sp('home')" aria-label="The Strategy Room — home">
         The <span>Strategy Room</span>
       </button>
-      <ul class="nl" role="list">
-        <li><button class="nl-item" data-p="about"   onclick="sp('about')"   aria-label="About us">About</button></li>
-        <li><button class="nl-item" data-p="svcs"    onclick="sp('svcs')"    aria-label="Our services">Services</button></li>
-        <li><button class="nl-item" data-p="fam"     onclick="sp('fam')"     aria-label="Services for families">For Families</button></li>
-        <li><button class="nl-item" data-p="org"     onclick="sp('org')"     aria-label="Services for organizations">For Orgs</button></li>
-        <li><button class="nl-item nc" data-p="contact" onclick="sp('contact')" aria-label="Get in touch">Get in Touch</button></li>
+      <ul class="nl" id="nav-list" role="list">
+        <li><button class="nl-item" data-p="about"   onclick="sp('about');closeMenu()"   aria-label="About us">About</button></li>
+        <li><button class="nl-item" data-p="svcs"    onclick="sp('svcs');closeMenu()"    aria-label="Our services">Services</button></li>
+        <li><button class="nl-item" data-p="fam"     onclick="sp('fam');closeMenu()"     aria-label="Services for families">For Families</button></li>
+        <li><button class="nl-item" data-p="org"     onclick="sp('org');closeMenu()"     aria-label="Services for organizations">For Orgs</button></li>
+        <li><button class="nl-item nc" data-p="contact" onclick="sp('contact');closeMenu()" aria-label="Get in touch">Get in Touch</button></li>
       </ul>
+      <button
+        class="hamburger"
+        id="hamburger"
+        aria-label="Toggle navigation menu"
+        aria-expanded="false"
+        aria-controls="nav-list"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </nav>
 
@@ -124,6 +135,13 @@
 
       <!-- Hero -->
       <section class="hero" aria-label="Introduction">
+        <!-- Floating decorative dots (pure CSS animation) -->
+        <div class="hero-dot" aria-hidden="true"></div>
+        <div class="hero-dot" aria-hidden="true"></div>
+        <div class="hero-dot" aria-hidden="true"></div>
+        <div class="hero-dot" aria-hidden="true"></div>
+        <div class="hero-dot" aria-hidden="true"></div>
+        <div class="hero-dot" aria-hidden="true"></div>
         <div class="hi">
           <div>
             <div class="ey">For Families in Crisis &nbsp;&middot;&nbsp; For Behavioral Health Organizations</div>
@@ -243,6 +261,29 @@
               <div class="hwt">We carry the work</div>
               <div class="hwh">Execution, advocacy, results — then we step back</div>
               <div class="hwd">We handle the coordination, the calls, the navigation — and exit cleanly when the work is done.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials -->
+      <section class="tm" aria-labelledby="testimonials-heading">
+        <div class="w">
+          <div class="sl">What families & partners say</div>
+          <h2 id="testimonials-heading" class="st">Real impact, <em>real stories.</em></h2>
+          <p class="ss">The words of the people we've had the privilege to serve — shared with their permission.</p>
+          <div class="tmg">
+            <div class="tmc fu">
+              <p class="tm-quote">"We didn't know where to turn. The Strategy Room stepped in within hours and gave us a plan when we felt completely lost. Having someone who knew the system — and who genuinely cared — made all the difference."</p>
+              <div class="tm-attr">— Family navigating a behavioral health crisis, St. Louis</div>
+            </div>
+            <div class="tmc fu d2">
+              <p class="tm-quote">"Their consultant helped us identify operational gaps we had missed for years. Within weeks, our team was functioning more efficiently and our patient satisfaction scores improved meaningfully."</p>
+              <div class="tm-attr">— Behavioral health organization, Midwest</div>
+            </div>
+            <div class="tmc fu d3">
+              <p class="tm-quote">"I was skeptical that anyone could actually help us navigate my father's rare disease diagnosis. They found specialists we didn't know existed and advocated for us every step of the way. Worth every penny."</p>
+              <div class="tm-attr">— Adult child of a rare disease patient, nationwide</div>
             </div>
           </div>
         </div>
@@ -656,7 +697,7 @@
               <input type="hidden" name="_next" value="https://thestrategyroomstl.com/#contact">
 
               <div class="fr">
-                <div class="fg">
+                <div class="fg" id="fg-first-name">
                   <label for="first-name">First name</label>
                   <input
                     type="text"
@@ -666,9 +707,11 @@
                     required
                     autocomplete="given-name"
                     aria-required="true"
+                    aria-describedby="msg-first-name"
                   >
+                  <span class="field-msg" id="msg-first-name" aria-live="polite"></span>
                 </div>
-                <div class="fg">
+                <div class="fg" id="fg-last-name">
                   <label for="last-name">Last name</label>
                   <input
                     type="text"
@@ -678,11 +721,13 @@
                     required
                     autocomplete="family-name"
                     aria-required="true"
+                    aria-describedby="msg-last-name"
                   >
+                  <span class="field-msg" id="msg-last-name" aria-live="polite"></span>
                 </div>
               </div>
 
-              <div class="fg">
+              <div class="fg" id="fg-email">
                 <label for="email">Email address</label>
                 <input
                   type="email"
@@ -692,7 +737,9 @@
                   required
                   autocomplete="email"
                   aria-required="true"
+                  aria-describedby="msg-email"
                 >
+                <span class="field-msg" id="msg-email" aria-live="polite"></span>
               </div>
 
               <div class="fg">
@@ -720,7 +767,7 @@
                 </select>
               </div>
 
-              <div class="fg">
+              <div class="fg" id="fg-message">
                 <label for="message">Tell us what's going on</label>
                 <textarea
                   id="message"
@@ -728,7 +775,9 @@
                   placeholder="Share as much or as little as you'd like. We're here to listen."
                   required
                   aria-required="true"
+                  aria-describedby="msg-message"
                 ></textarea>
+                <span class="field-msg" id="msg-message" aria-live="polite"></span>
               </div>
 
               <p class="form-disclaimer">
@@ -796,6 +845,21 @@
 
   <!-- ── Footer ─────────────────────────────────────────────────────────────── -->
   <footer role="contentinfo">
+    <!-- Footer top band: tagline + crisis hotline -->
+    <div class="footer-top">
+      <div class="footer-top-inner">
+        <div class="footer-tagline">
+          "Clarity, capability, and compassion — when it matters most."
+        </div>
+        <div class="footer-crisis" role="note" aria-label="Crisis resources">
+          <div>
+            <div class="footer-crisis-label">24/7 Crisis Line</div>
+            <a href="tel:988" class="footer-crisis-number" aria-label="Call or text 988, the Suicide and Crisis Lifeline">988</a>
+            <div class="footer-crisis-sub">Suicide &amp; Crisis Lifeline — call or text</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="fo">
       <div>
         <div class="fb">The <span>Strategy Room</span></div>
