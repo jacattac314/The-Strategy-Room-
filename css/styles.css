@@ -25,7 +25,7 @@
 
 /* ─── Reset ─────────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html  { scroll-behavior: smooth; }
+html  { scroll-behavior: smooth; font-size: 15px; }
 body  {
   font-family: var(--fb);
   background:  var(--cream);
@@ -143,6 +143,56 @@ nav.sc { box-shadow: 0 2px 20px rgba(44,48,40,.08); }
   color:       var(--charcoal);
   background:  var(--sage-pale);
 }
+.nl button.act {
+  position:    relative;
+  color:       var(--sage-deep);
+  font-weight: 600;
+}
+.nl button.act::after {
+  content:    '';
+  position:   absolute;
+  bottom:     -2px;
+  left:       50%;
+  transform:  translateX(-50%);
+  width:      60%;
+  height:     2px;
+  background: var(--sage);
+  border-radius: 2px;
+  animation:  slideIn .25s ease;
+}
+@keyframes slideIn {
+  from { width: 0; opacity: 0; }
+  to   { width: 60%; opacity: 1; }
+}
+
+/* ─── Hamburger Menu ─────────────────────────────────────────────────────────── */
+.hamburger {
+  display:        none;
+  flex-direction: column;
+  justify-content: center;
+  align-items:    center;
+  gap:            5px;
+  background:     none;
+  border:         none;
+  cursor:         pointer;
+  padding:        8px;
+  border-radius:  8px;
+  transition:     background .2s;
+  z-index:        200;
+}
+.hamburger:hover { background: var(--sage-pale); }
+.hamburger span {
+  display:    block;
+  width:      22px;
+  height:     2px;
+  background: var(--charcoal);
+  border-radius: 2px;
+  transition: transform .3s ease, opacity .3s ease, width .3s ease;
+  transform-origin: center;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 /* Nav CTA pill */
 .nc {
@@ -180,12 +230,15 @@ section     { padding: 72px 24px; }
   border:         none;
   cursor:         pointer;
   transition:     all .25s;
+  position:       relative;
+  overflow:       hidden;
 }
 .bp:hover {
   background:     var(--sage-deep);
-  transform:      translateY(-2px);
-  box-shadow:     0 8px 24px rgba(90,125,105,.3);
+  transform:      translateY(-3px);
+  box-shadow:     0 10px 28px rgba(90,125,105,.35);
 }
+.bp:active { transform: translateY(-1px); }
 
 .bs {
   background:     transparent;
@@ -200,12 +253,29 @@ section     { padding: 72px 24px; }
   border:         1.5px solid var(--border);
   cursor:         pointer;
   transition:     all .25s;
+  position:       relative;
+  overflow:       hidden;
 }
 .bs:hover {
   border-color: var(--sage);
   color:        var(--sage-deep);
   background:   var(--sage-pale);
-  transform:    translateY(-2px);
+  transform:    translateY(-3px);
+  box-shadow:   0 8px 20px rgba(122,158,135,.2);
+}
+.bs:active { transform: translateY(-1px); }
+
+/* Ripple effect */
+.btn-ripple {
+  position:      absolute;
+  border-radius: 50%;
+  transform:     scale(0);
+  animation:     ripple .5s linear;
+  background:    rgba(255,255,255,.35);
+  pointer-events: none;
+}
+@keyframes ripple {
+  to { transform: scale(4); opacity: 0; }
 }
 
 /* Inline text button */
